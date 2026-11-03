@@ -1012,7 +1012,7 @@ function mPlay(i){
   if(MU.pl&&MU.pl.loadVideoById&&MU.ready){MU.pl.loadVideoById(id);try{MU.pl.setPlaybackRate(+$('#mrate').value)}catch(e){}return}
   if(MU.pl)return;                              // still being created: it will start with MU.i
   loadYT().then(()=>{
-    clearTimeout(MU.wd);MU.wd=setTimeout(()=>{if(!MU.ready){try{MU.pl&&MU.pl.destroy&&MU.pl.destroy()}catch(_){}MU.pl=null;if(!$('#mvp')){mk('div','',null,$('.mv',mus)).id='mvp'}const c=$('.mcover',mus);c.classList.remove('hide');c.innerHTML='播放器没有加载出来（YouTube 可能被拦截）<br><a target="_blank" rel="noopener" style="color:#7fe3f2" href="https://www.youtube.com/watch?v='+MEDIA.songs[MU.i][3]+'">在新标签页用 YouTube 打开 ↗</a><br><small>点下面任意一首歌可重试</small>'}},9000);
+    clearTimeout(MU.wd);MU.wd=setTimeout(()=>{if(!MU.ready){try{MU.pl&&MU.pl.destroy&&MU.pl.destroy()}catch(_){}MU.pl=null;if(!$('#mvp')){mk('div','',null,$('.mv',mus)).id='mvp'}const c=$('.mcover',mus);c.classList.remove('hide');c.innerHTML='<div style="width:100%;padding:0 18px;text-align:center;line-height:1.9;font-size:13px">播放器没有加载出来（YouTube 可能被网络或嵌入环境拦截）<br><a target="_blank" rel="noopener" style="color:#7fe3f2" href="https://www.youtube.com/watch?v='+MEDIA.songs[MU.i][3]+'">在新标签页用 YouTube 打开 ↗</a><br><small style="opacity:.7">点下面任意一首歌可重试</small></div>'}},9000);
     MU.pl=new YTP('mvp',{width:'100%',height:'100%',videoId:MEDIA.songs[MU.i][3],playerVars:ytVars(),events:{
       onReady:e=>{MU.ready=true;clearTimeout(MU.wd);e.target.setVolume(+mvol.value);e.target.playVideo();
         setTimeout(()=>{try{if(MU.open&&e.target.getPlayerState()!==1&&e.target.getPlayerState()!==3){toast('浏览器拦截了自动播放：请点一下面板里视频画面的 ▶');$('.mcover',mus).classList.add('hide')}}catch(_){}},3500)},
