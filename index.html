@@ -872,7 +872,49 @@ document.addEventListener('mouseover',e=>{const t=e.target.closest&&e.target.clo
 
 /* ---------------- YouTube loader ---------------- */
 let ytP=null;
-function loadYT(){return ytP||(ytP=new Promise((res,rej)=>{if(window.YT&&YT.Player)return res();const prev=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{prev&&prev();res()};const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=()=>{ytP=null;rej(new Error('yt'))};document.head.appendChild(s);setTimeout(()=>{if(!(window.YT&&YT.Player)){ytP=null;rej(new Error('timeout'))}},12000)}))}
+/* Lightweight YouTube player driven purely by postMessage (does NOT load iframe_api,
+   so it also works inside sandboxed / opaque-origin iframes such as card pages). */
+let ytWid=0;const ytPlayers=[];
+addEventListener('message',e=>{
+  if(!/(^|\.)youtube(-nocookie)?\.com$/.test((e.origin||'').replace(/^https?:\/\//,'')))return;
+  let d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(_){return}}if(!d||!d.event)return;
+  const p=ytPlayers.find(x=>x.f&&x.f.contentWindow===e.source);if(p)p._msg(d)});
+class YTP{
+  constructor(id,o){
+    this.o=o;this.ev=o.events||{};this.S={st:-1,cur:0,dur:0,rate:1,rates:[.25,.5,.75,1,1.25,1.5,1.75,2]};this.ready=false;this.wid=++ytWid;
+    const host=document.getElementById(id);const f=this.f=document.createElement('iframe');f.id=id;
+    f.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';f.setAttribute('allowfullscreen','');f.style.cssText='width:100%;height:100%;border:0;display:block;background:#000';
+    f.src=this._src(o.videoId);if(host)host.replaceWith(f);ytPlayers.push(this);
+    f.addEventListener('load',()=>this._listen());
+    this._lt=setInterval(()=>{if(!this.got)this._listen();else clearInterval(this._lt)},400);
+  }
+  _src(v){const pv=Object.assign({enablejsapi:1,playsinline:1,widgetid:this.wid},this.o.playerVars||{});return 'https://www.youtube.com/embed/'+v+'?'+Object.entries(pv).map(([k,x])=>k+'='+encodeURIComponent(x)).join('&')}
+  _post(o){try{this.f.contentWindow.postMessage(JSON.stringify(o),'*')}catch(_){}}
+  _listen(){this._post({event:'listening',id:this.wid,channel:'widget'})}
+  _cmd(fn,args){this._post({event:'command',func:fn,args:args||[],id:this.wid,channel:'widget'})}
+  _msg(d){
+    this.got=true;
+    if(d.event==='onReady'||(!this.ready&&(d.event==='initialDelivery'||d.event==='infoDelivery'))){if(!this.ready){this.ready=true;this.ev.onReady&&this.ev.onReady({target:this})}}
+    const i=d.info;
+    if(d.event==='onStateChange'&&typeof i==='number')this._st(i);
+    else if(d.event==='onError'){this.ev.onError&&this.ev.onError({data:i})}
+    else if(i&&typeof i==='object'){
+      if(typeof i.currentTime==='number')this.S.cur=i.currentTime;
+      if(typeof i.duration==='number'&&i.duration>0)this.S.dur=i.duration;
+      if(typeof i.playbackRate==='number')this.S.rate=i.playbackRate;
+      if(i.availablePlaybackRates&&i.availablePlaybackRates.length)this.S.rates=i.availablePlaybackRates;
+      if(typeof i.playerState==='number')this._st(i.playerState)}
+  }
+  _st(n){if(n!==this.S.st){this.S.st=n;this.ev.onStateChange&&this.ev.onStateChange({data:n,target:this})}}
+  playVideo(){this._cmd('playVideo')}pauseVideo(){this._cmd('pauseVideo')}
+  seekTo(s,a){this.S.cur=s;this._cmd('seekTo',[s,a!==false])}
+  setVolume(v){this._cmd('setVolume',[v])}setPlaybackRate(r){this._cmd('setPlaybackRate',[r])}
+  loadVideoById(v){this.S.cur=0;this.S.dur=0;this._cmd('loadVideoById',[v])}
+  getPlayerState(){return this.S.st}getCurrentTime(){return this.S.cur}getDuration(){return this.S.dur}
+  getPlaybackRate(){return this.S.rate}getAvailablePlaybackRates(){return this.S.rates}
+  destroy(){clearInterval(this._lt);const i=ytPlayers.indexOf(this);if(i>=0)ytPlayers.splice(i,1);if(this.f){const d=document.createElement('div');d.id=this.f.id;this.f.replaceWith(d)}}
+}
+function loadYT(){return Promise.resolve()}
 const ytVars=()=>{const v={autoplay:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0};return v};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 let MOD=null;                                   // currently open modal: 'anime' | 'creator'
@@ -912,7 +954,7 @@ function openAnime(i){
     if(MOD!=='anime')return;
     const mkp=()=>{AN.ready=false;AN.id=it[1];$('.aload',anm).style.display='none';
       clearTimeout(AN.wd);AN.wd=setTimeout(()=>{if(MOD==='anime'&&!AN.ready)anLoadText('LOADING TIMEOUT','视频没有加载出来（YouTube 可能被网络或嵌入环境拦截）。<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v='+it[1]+'">在新标签页用 YouTube 打开 ↗</a>')},9000);
-      AN.pl=new YT.Player('avp',{width:'100%',height:'100%',videoId:it[1],playerVars:ytVars(),events:{
+      AN.pl=new YTP('avp',{width:'100%',height:'100%',videoId:it[1],playerVars:ytVars(),events:{
         onReady:e=>{AN.ready=true;clearTimeout(AN.wd);e.target.setVolume(+avol.value);e.target.setPlaybackRate(AN.rate);e.target.playVideo();
           setTimeout(()=>{try{if(MOD==='anime'&&e.target.getPlayerState()!==1){$('.aclick',anm).style.pointerEvents='none';toast('浏览器拦截了自动播放：请点一下视频画面中间的 ▶')}}catch(_){}},3500);try{const av=e.target.getAvailablePlaybackRates();$$('.spd',anm).forEach(s=>s.classList.toggle('dis',!av.includes(+s.dataset.r)))}catch(_){}},
         onStateChange:e=>{if(e.data===1)anSetPlay(true);else if(e.data===2||e.data===0)anSetPlay(false)},
@@ -971,7 +1013,7 @@ function mPlay(i){
   if(MU.pl)return;                              // still being created: it will start with MU.i
   loadYT().then(()=>{
     clearTimeout(MU.wd);MU.wd=setTimeout(()=>{if(!MU.ready){try{MU.pl&&MU.pl.destroy&&MU.pl.destroy()}catch(_){}MU.pl=null;if(!$('#mvp')){mk('div','',null,$('.mv',mus)).id='mvp'}const c=$('.mcover',mus);c.classList.remove('hide');c.innerHTML='播放器没有加载出来（YouTube 可能被拦截）<br><a target="_blank" rel="noopener" style="color:#7fe3f2" href="https://www.youtube.com/watch?v='+MEDIA.songs[MU.i][3]+'">在新标签页用 YouTube 打开 ↗</a><br><small>点下面任意一首歌可重试</small>'}},9000);
-    MU.pl=new YT.Player('mvp',{width:'100%',height:'100%',videoId:MEDIA.songs[MU.i][3],playerVars:ytVars(),events:{
+    MU.pl=new YTP('mvp',{width:'100%',height:'100%',videoId:MEDIA.songs[MU.i][3],playerVars:ytVars(),events:{
       onReady:e=>{MU.ready=true;clearTimeout(MU.wd);e.target.setVolume(+mvol.value);e.target.playVideo();
         setTimeout(()=>{try{if(MU.open&&e.target.getPlayerState()!==1&&e.target.getPlayerState()!==3){toast('浏览器拦截了自动播放：请点一下面板里视频画面的 ▶');$('.mcover',mus).classList.add('hide')}}catch(_){}},3500)},
       onStateChange:e=>{
