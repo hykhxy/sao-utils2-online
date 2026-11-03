@@ -1166,7 +1166,7 @@ ${secHtml('05','初始技能','SKILL · 最多选 3 个','sk',CR_SK)}
 ${secHtml('06','天赋','TALENT · 最多选 2 个（原创天赋）','ta',CR_TA)}
 ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
 <div class="csec"><h4><i>08</i>立绘<small>PORTRAIT · 公共立绘 / 自填外链</small></h4>
-<div class="pics" role="group" aria-label="选择公共立绘">${CR_GALLERY.map(p=>`<button class="pic" type="button" data-portrait-id="${p.id}" aria-label="选择${p.label}" aria-pressed="false"><img src="${p.src}" alt="${p.label}立绘" loading="lazy" referrerpolicy="no-referrer"><span>${p.label}</span></button>`).join('')}</div>
+<div class="pics" role="group" aria-label="选择公共立绘">${CR_GALLERY.map(p=>`<button class="pic" type="button" data-portrait-id="${p.id}" aria-label="选择${p.label}" aria-pressed="false"><img src="${p.src}" alt="${p.label}立绘" loading="lazy" referrerpolicy="no-referrer"><span style="color:#d8f0ff;font:11px/1.5 Microsoft YaHei,sans-serif">${p.label}</span></button>`).join('')}</div>
 <div class="urow"><input type="url" id="curl" aria-label="角色立绘外链" placeholder="粘贴公开图片外链 https://…" autocomplete="off" spellcheck="false" inputmode="url"><button class="sbtn sm" data-c="useurl" type="button">预览立绘</button></div>
 <div class="tip">点击上方四张公共立绘即可选择并保存外链，也可自填 HTTPS 图片链接。创建后复制角色设定，立绘URL和头像URL会一并带出；请手动发送到聊天。图片只是外观示意，不自动授予图中装备。</div></div>
 
