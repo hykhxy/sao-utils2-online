@@ -873,7 +873,7 @@ document.addEventListener('mouseover',e=>{const t=e.target.closest&&e.target.clo
 /* ---------------- YouTube loader ---------------- */
 let ytP=null;
 function loadYT(){return ytP||(ytP=new Promise((res,rej)=>{if(window.YT&&YT.Player)return res();const prev=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{prev&&prev();res()};const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=()=>{ytP=null;rej(new Error('yt'))};document.head.appendChild(s);setTimeout(()=>{if(!(window.YT&&YT.Player)){ytP=null;rej(new Error('timeout'))}},12000)}))}
-const ytVars=()=>{const v={autoplay:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0};if(/^https?:/.test(location.protocol))v.origin=location.origin;return v};
+const ytVars=()=>{const v={autoplay:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,disablekb:1,fs:0};return v};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 let MOD=null;                                   // currently open modal: 'anime' | 'creator'
 
@@ -911,8 +911,10 @@ function openAnime(i){
   loadYT().then(()=>{
     if(MOD!=='anime')return;
     const mkp=()=>{AN.ready=false;AN.id=it[1];$('.aload',anm).style.display='none';
+      clearTimeout(AN.wd);AN.wd=setTimeout(()=>{if(MOD==='anime'&&!AN.ready)anLoadText('LOADING TIMEOUT','视频没有加载出来（YouTube 可能被网络或嵌入环境拦截）。<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v='+it[1]+'">在新标签页用 YouTube 打开 ↗</a>')},9000);
       AN.pl=new YT.Player('avp',{width:'100%',height:'100%',videoId:it[1],playerVars:ytVars(),events:{
-        onReady:e=>{AN.ready=true;e.target.setVolume(+avol.value);e.target.setPlaybackRate(AN.rate);e.target.playVideo();try{const av=e.target.getAvailablePlaybackRates();$$('.spd',anm).forEach(s=>s.classList.toggle('dis',!av.includes(+s.dataset.r)))}catch(_){}},
+        onReady:e=>{AN.ready=true;clearTimeout(AN.wd);e.target.setVolume(+avol.value);e.target.setPlaybackRate(AN.rate);e.target.playVideo();
+          setTimeout(()=>{try{if(MOD==='anime'&&e.target.getPlayerState()!==1){$('.aclick',anm).style.pointerEvents='none';toast('浏览器拦截了自动播放：请点一下视频画面中间的 ▶')}}catch(_){}},3500);try{const av=e.target.getAvailablePlaybackRates();$$('.spd',anm).forEach(s=>s.classList.toggle('dis',!av.includes(+s.dataset.r)))}catch(_){}},
         onStateChange:e=>{if(e.data===1)anSetPlay(true);else if(e.data===2||e.data===0)anSetPlay(false)},
         onError:()=>{anLoadText('CANNOT EMBED','这个视频不允许嵌入播放。<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v='+it[1]+'">在 YouTube 打开 ↗</a>')}}})};
     if(AN.pl&&AN.pl.loadVideoById){AN.ready=true;AN.id=it[1];$('.aload',anm).style.display='none';AN.pl.loadVideoById(it[1]);AN.pl.setPlaybackRate(AN.rate);AN.pl.setVolume(+avol.value)}
@@ -968,8 +970,10 @@ function mPlay(i){
   if(MU.pl&&MU.pl.loadVideoById&&MU.ready){MU.pl.loadVideoById(id);try{MU.pl.setPlaybackRate(+$('#mrate').value)}catch(e){}return}
   if(MU.pl)return;                              // still being created: it will start with MU.i
   loadYT().then(()=>{
+    clearTimeout(MU.wd);MU.wd=setTimeout(()=>{if(!MU.ready){try{MU.pl&&MU.pl.destroy&&MU.pl.destroy()}catch(_){}MU.pl=null;if(!$('#mvp')){mk('div','',null,$('.mv',mus)).id='mvp'}const c=$('.mcover',mus);c.classList.remove('hide');c.innerHTML='播放器没有加载出来（YouTube 可能被拦截）<br><a target="_blank" rel="noopener" style="color:#7fe3f2" href="https://www.youtube.com/watch?v='+MEDIA.songs[MU.i][3]+'">在新标签页用 YouTube 打开 ↗</a><br><small>点下面任意一首歌可重试</small>'}},9000);
     MU.pl=new YT.Player('mvp',{width:'100%',height:'100%',videoId:MEDIA.songs[MU.i][3],playerVars:ytVars(),events:{
-      onReady:e=>{MU.ready=true;e.target.setVolume(+mvol.value);e.target.playVideo()},
+      onReady:e=>{MU.ready=true;clearTimeout(MU.wd);e.target.setVolume(+mvol.value);e.target.playVideo();
+        setTimeout(()=>{try{if(MU.open&&e.target.getPlayerState()!==1&&e.target.getPlayerState()!==3){toast('浏览器拦截了自动播放：请点一下面板里视频画面的 ▶');$('.mcover',mus).classList.add('hide')}}catch(_){}},3500)},
       onStateChange:e=>{
         if(e.data===1){MU.playing=true;MU.errs=0;duck(true);mUi()}
         else if(e.data===2){MU.playing=false;mUi()}
@@ -1034,7 +1038,7 @@ function secHtml(num,title,sub,key,opts,en){
 cre.innerHTML=`<div class="cwin glass"><div class="xbtn" data-c="x" title="关闭 (Esc)">✕</div>
 <div class="chead"><b>创造角色</b><small>CHARACTER CREATION · LINK START</small></div>
 <div class="cbody"><div class="cform">
-<div class="csec"><h4><i>01</i>姓名<small>NAME</small></h4><input type="text" id="cname" maxlength="16" placeholder="输入你的角色名（例如：Kirito 风格的游戏名也可以）" autocomplete="off" spellcheck="false"></div>
+<div class="csec"><h4><i>01</i>姓名<small>NAME · 使用开场登录时填写的名字</small></h4><div id="cnamev" style="font:700 20px 'Microsoft YaHei',sans-serif;color:#fff;padding:8px 14px;border:1px solid rgba(127,227,242,.55);border-radius:6px;background:rgba(10,30,50,.55)">—</div><div style="font-size:12px;color:#8fb2c6;margin-top:6px">想改名字？回到开场重新登录时修改即可，登录后会自动保存为角色设定。</div></div>
 ${secHtml('02','性别','GENDER · 可选可填','gender',CR_GD.map(g=>[g[0],g[1]]))}
 ${secHtml('03','时间线','TIMELINE · 取自本卡剧情线','tl',CR_TL)}
 ${secHtml('04','武器','WEAPON · 单选','wp',CR_WP)}
@@ -1049,16 +1053,16 @@ ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
 <div class="cprev"><div class="pimg" id="pimg">尚未选择立绘</div><div class="pname" id="pname">—</div>
 <div class="pbars"><div>HP 750 / 750 　LV 1</div><div class="b"><i></i></div><div id="ptags" style="margin-top:8px;line-height:1.7;color:#9fd3f2;font-family:'Microsoft YaHei';font-size:12px;text-align:center"></div></div></div>
 <div class="cres" id="cres"></div></div>
-<div class="cfoot"><div class="tip">除姓名外都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。本地上传的图片只在你的浏览器里显示，不会上传到任何服务器。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
+<div class="cfoot"><div class="tip">姓名取自登录时填写的名字；其余都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。本地上传的图片只在你的浏览器里显示，不会上传到任何服务器。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
 function crSync(){
   $$('#cre .chip').forEach(c=>{const k=c.dataset.k,f=CF[k];if(c.dataset.c)c.classList.toggle('on',f.on);else c.classList.toggle('on',f.sel.includes(c.dataset.v))});
   $$('#cre .cin').forEach(i=>i.classList.toggle('on',CF[i.dataset.k].on));
   $$('#cre .pic').forEach((p,i)=>p.classList.toggle('on',CF.pic&&CF.pic.pre===i));
-  $('#pname').textContent=CF.name.trim()||'—';
+  $('#pname').textContent=CF.name.trim()||'—';$('#cnamev').textContent=CF.name.trim()||'（登录后自动填入）';
   const pi=$('#pimg');if(CF.pic){if(pi.dataset.s!==CF.pic.src){pi.dataset.s=CF.pic.src;pi.innerHTML='<img alt="">';pi.firstChild.referrerPolicy='no-referrer';pi.firstChild.src=CF.pic.src}}else{pi.dataset.s='';pi.textContent='尚未选择立绘'}
   $('#ptags').innerHTML=[val('tl'),val('wp'),val('sk'),val('lv')].filter(Boolean).map(esc).join('<br>');
 }
-function crReset(){CF.name='';CF.note='';CF.pic=null;for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}$('#cname').value='';$('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync()}
+function crReset(){CF.note='';CF.pic=null;for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}$('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync()}
 function crPick(k,v){const f=CF[k],g=CFG[k];const i=f.sel.indexOf(v);if(i>=0){f.sel.splice(i,1)}else{if(!g.multi)f.sel=[v];else{if(f.sel.length>=g.max){toast('最多只能选 '+g.max+' 个，可以取消一个再选');return}f.sel.push(v)}}crSync()}
 function crPicSet(src,pre,label){CF.pic={src,pre,label};crSync()}
 function crToText(){
@@ -1072,8 +1076,8 @@ function crShowResult(){
   <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 返回修改</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
   <div style="margin-top:14px;font-size:12px;color:#8fb2c6;line-height:1.7">把「复制角色设定」粘贴到聊天里发给角色卡，就能带着这个身份进入故事。角色已保存在这台设备的浏览器里，下次打开会自动恢复。</div>`;
   cre.classList.add('done')}
-function crSave(){LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic&&CF.pic.label==='local'&&CF.pic.src.length>1500000?null:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
-function crLoad(){const s=LS.get('sao_char',null);if(!s)return;CF.name=s.name||'';CF.note=s.note||'';CF.pic=s.pic||null;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cname').value=CF.name;$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
+function crSave(){try{parent!==window&&parent.postMessage({type:'sao-character',name:CF.name,text:crToText()},'*')}catch(e){}LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic&&CF.pic.label==='local'&&CF.pic.src.length>1500000?null:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
+function crLoad(){const s=LS.get('sao_char',null);if(!s)return;CF.note=s.note||'';CF.pic=s.pic||null;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
 function crFile(file){
   if(!file||!/^image\//.test(file.type)){toast('请选择图片文件');return}
   const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*m);c.height=Math.round(im.height*m);c.getContext('2d').drawImage(im,0,0,c.width,c.height);crPicSet(c.toDataURL('image/jpeg',.88),-1,'local');toast('已载入本地立绘')};im.onerror=()=>toast('这张图片无法读取');im.src=fr.result};fr.readAsDataURL(file)}
@@ -1094,14 +1098,15 @@ cre.addEventListener('click',e=>{
   else if(v==='upload')$('#cfile').click();
   else if(v==='useurl')crUrl();
   else if(v==='reset')crReset();
-  else if(v==='make'){if(!CF.name.trim()){toast('请先给角色起个名字');$('#cname').focus();$('#cname').scrollIntoView({block:'center'});return}crSave();crShowResult();tick(1500,.1,.06);flash()}
+  else if(v==='make'){if(!CF.name.trim())CF.name=(($('#nick')||{}).value||'Kirito').trim()||'Kirito';crSave();crShowResult();tick(1500,.1,.06);flash()}
   else if(v==='edit'){cre.classList.remove('done')}
   else if(v==='copy'){const t=crToText();(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制，去聊天里粘贴吧'),()=>{const ta=mk('textarea','',null,document.body);ta.value=t;ta.style.cssText='position:fixed;left:-999px';ta.select();try{document.execCommand('copy');toast('已复制，去聊天里粘贴吧')}catch(_){toast('复制失败，请手动选择文字')}ta.remove()})}
   else if(v==='txt'){const a=mk('a','',null,document.body);a.href=URL.createObjectURL(new Blob([crToText()],{type:'text/plain;charset=utf-8'}));a.download=(CF.name.trim()||'角色')+'_设定.txt';a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 });
-cre.addEventListener('input',e=>{const t=e.target;if(t.id==='cname')CF.name=t.value;else if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
+cre.addEventListener('input',e=>{const t=e.target;if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
 $('#cfile').addEventListener('change',e=>{crFile(e.target.files[0]);e.target.value=''});
 $('#curl').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();crUrl()}});
+crLoad();openCreator.loaded=1;{const s=LS.get('sao_char',null),nk=$('#nick');if(s&&s.name){CF.name=s.name;if(nk)nk.value=s.name}else if(nk)CF.name=nk.value.trim()}crSync();
 // the old "Items" menu entry becomes "创造角色"
 {const it=fA.querySelector('.mi');it.lastChild.textContent='创造角色';it.style.fontSize='11px';it.title='创造你的角色'}
 
@@ -1114,6 +1119,7 @@ act=function(name,elm){
     if(!galleryAllowed()){tick(500,.08);return}
     if(name==='music2'&&MU.i>=0&&MU.pl&&MU.ready){mToggle();tick(1300,.05,.05);return}
     openMusic();if(MU.i<0)mPlay(0);else tick(1200,.06,.05);return}
+  if(name==='login2'&&hudStage===1){const nk=$('#nick');CF.name=((nk&&nk.value)||'Kirito').trim()||'Kirito';crSave();crSync();toast('已登录：「'+CF.name+'」已保存到角色设定')}
   if(name==='login2'||name==='menu'){if((name==='login2'&&hudStage===1)||(name==='menu'&&scene==='hud'&&hudStage>=3))flash()}
   return _act(name,elm)};
 addEventListener('keydown',e=>{
