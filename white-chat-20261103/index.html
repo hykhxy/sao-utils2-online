@@ -1,0 +1,133 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>刀剑神域 · 白色原生聊天预览</title><style>body{margin:0;background:#e8eef0;font-family:"Microsoft YaHei",sans-serif;color:#344c57}main{max-width:1320px;margin:auto;padding:30px 30px 70px}.preview-note{max-width:1160px;margin:0 auto 15px;font:12px/1.8 sans-serif;color:#627985}.preview-note strong{font-size:17px;font-weight:500}.is-user{max-width:700px;margin:18px 0 18px auto}.is-user>div{padding:15px 20px;font-size:14px}#prompt-input{position:sticky;bottom:0;padding:14px 0 0}#prompt-input>div{padding:14px 18px;border-radius:8px;font-size:12px}input,textarea{font:14px/1.8 sans-serif;width:100%;border:0;background:none;resize:none;box-sizing:border-box}.test-second{margin-top:40px}@media(max-width:760px){main{padding:12px 7px 35px}.preview-note{font-size:10px;padding:0 6px}}
+/* SAO · 原生白色聊天。语义结构是主选择器，不依赖 class/id/脚本。 */
+article:has(> header > small) {
+  --sao-paper:#fcfcfa;--sao-ink:#293842;--sao-muted:#657782;--sao-line:#d9e2e6;--sao-accent:#54818e;--sao-gold:#ac8c56;
+  display:grid!important;grid-template-columns:216px minmax(0,1fr);grid-template-rows:auto 1fr;
+  width:100%;max-width:1160px;min-width:0;margin:12px auto 24px!important;padding:0!important;
+  border:1px solid var(--sao-line)!important;border-radius:8px!important;overflow:clip;isolation:isolate;
+  color:var(--sao-ink)!important;background:var(--sao-paper)!important;
+  box-shadow:0 10px 35px #324f5e0c;line-height:1.9;font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  animation:sao-arrive .35s ease-out;
+}
+article:has(> header > small) * {box-sizing:border-box;min-width:0;}
+article:has(> header > small) > header {
+  grid-column:1/-1;position:relative;margin:0;padding:23px 30px 19px!important;border-bottom:1px solid var(--sao-line);
+  background:linear-gradient(100deg,#fff,#f4f8f9 70%,#f8f6ef);color:var(--sao-ink)!important;
+}
+article:has(> header > small) > header::before {content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,#9dbac3,#d9e5e7 50%,#d7c69f);opacity:.7;pointer-events:none;}
+article:has(> header > small) > header > small {display:block;font:600 10px/1.7 "Segoe UI",sans-serif;letter-spacing:.22em;color:#6c8993;}
+article:has(> header > small) > header > h2 {margin:5px 0 6px!important;padding:0!important;font:500 23px/1.5 "Songti SC",SimSun,serif!important;letter-spacing:.06em;color:#293842!important;border:0!important;}
+article:has(> header > small) > header > p {margin:0!important;font:12px/1.8 "Microsoft YaHei",sans-serif;color:#657782!important;}
+article:has(> header > small) > aside {grid-column:1;grid-row:2;position:relative;padding:22px 16px 28px!important;background:linear-gradient(#f2f6f7e8,#fafbfaf5);border-right:1px solid var(--sao-line);font:12px/1.8 "Microsoft YaHei",sans-serif;color:var(--sao-ink);}
+article:has(> header > small) > aside > figure {margin:0 0 19px!important;text-align:center;}
+article:has(> header > small) > aside > figure > img {display:block!important;width:100%!important;height:210px!important;object-fit:cover!important;object-position:50% 18%;border-radius:4px;border:1px solid #e1e8e9;margin:0 auto 9px!important;opacity:.94;}
+article:has(> header > small) > aside > figure > figcaption {font:600 10px/1.8 "Segoe UI",sans-serif;letter-spacing:.15em;color:#65818b;}
+article:has(> header > small) > aside > details {margin:0 0 9px!important;border:1px solid #dce5e8!important;border-radius:4px;background:#ffffffb5;color:var(--sao-ink);}
+article:has(> header > small) > aside > details > summary {list-style:none!important;cursor:pointer;padding:10px 11px!important;font:500 12px/1.7 "Microsoft YaHei",sans-serif;letter-spacing:.07em;user-select:none;color:#456773!important;transition:background .2s;}
+article:has(> header > small) > aside > details > summary::-webkit-details-marker {display:none;}
+article:has(> header > small) > aside > details > summary::before {content:"◇";margin-right:7px;color:var(--sao-gold);}
+article:has(> header > small) > aside > details > summary::after {content:"＋";float:right;font-size:11px;color:#7f949c;}
+article:has(> header > small) > aside > details[open] > summary {border-bottom:1px solid #e2e9ec;background:#edf4f5;color:#344f5a!important;}
+article:has(> header > small) > aside > details[open] > summary::after {content:"−";}
+article:has(> header > small) > aside > details > :not(summary) {margin:10px!important;}
+article:has(> header > small) > aside p {font:12px/1.9 "Microsoft YaHei",sans-serif!important;text-indent:0!important;color:#536871!important;overflow-wrap:anywhere;}
+article:has(> header > small) dl {display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px 6px;}
+article:has(> header > small) dt {color:#7b8990;font-size:11px;}
+article:has(> header > small) dd {margin:0!important;color:#334b56;overflow-wrap:anywhere;}
+article:has(> header > small) progress {display:block;width:calc(100% - 20px);height:6px;accent-color:#83a88b;border:0;background:#e5ecea;border-radius:0;overflow:hidden;}
+article:has(> header > small) progress::-webkit-progress-bar {background:#e5ecea;}
+article:has(> header > small) progress::-webkit-progress-value {background:linear-gradient(90deg,#b6cda7,#7d9e89);}
+article:has(> header > small) aside ul {list-style:none!important;padding:0!important;}
+article:has(> header > small) aside li {margin:10px 0!important;padding:0!important;line-height:1.8;overflow-wrap:anywhere;}
+article:has(> header > small) aside li > img {width:38px!important;height:38px!important;object-fit:cover;object-position:50% 8%;float:left;margin:0 8px 3px 0!important;border-radius:50%;border:1px solid #c8d6dc;}
+article:has(> header > small) aside li > b {display:block;font-size:12px;font-weight:500;}
+article:has(> header > small) aside li > small {font-size:10px;color:#72838d;}
+article:has(> header > small) > section {grid-column:2;grid-row:2;position:relative;padding:28px 32px 38px!important;color:#293842!important;background:linear-gradient(#fffffff2,#fcfcfaf5);min-width:0;overflow-wrap:anywhere;}
+article:has(> header > small) > section::before {content:"";pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at 100% 0,#b3d8e414,transparent 48%);z-index:-1;}
+article:has(> header > small) > section > p {margin:0 0 1.35em!important;font:16px/2.15 "Songti SC","STSong","SimSun",serif!important;letter-spacing:.025em;text-indent:2em;text-align:justify;color:#293842!important;}
+article:has(> header > small) blockquote {display:grid!important;grid-template-columns:48px minmax(0,1fr);column-gap:13px;position:relative;margin:25px 0 28px!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;color:#293842!important;quotes:none;}
+article:has(> header > small) blockquote::before,article:has(> header > small) blockquote::after {content:none!important;}
+article:has(> header > small) blockquote > img {display:block!important;grid-column:1;grid-row:1/3;width:48px!important;height:56px!important;object-fit:cover!important;object-position:50% 8%;margin:3px 0 0!important;border:1px solid #bdcfd7!important;border-radius:50%!important;background:#eff4f6;}
+article:has(> header > small) blockquote > picture {display:block;grid-column:1;grid-row:1/3;position:relative;width:48px;height:56px;margin-top:3px;border:1px solid #bdcfd7;border-radius:50%;overflow:hidden;background:#eff4f6;}
+article:has(> header > small) blockquote > picture > img {position:absolute!important;display:block!important;width:144px!important;max-width:none!important;height:216px!important;left:-48px;top:-10px;object-fit:cover!important;margin:0!important;border:0!important;}
+article:has(> header > small) blockquote > cite {grid-column:2;display:block;font:500 11px/1.8 "Microsoft YaHei",sans-serif!important;letter-spacing:.05em;color:#687f89!important;margin:0 0 5px!important;}
+article:has(> header > small) blockquote > p {grid-column:2;margin:0!important;padding:13px 17px!important;background:#f7fafb!important;border:1px solid #d5e1e6!important;border-radius:3px 12px 12px 12px;font:15px/1.95 "Microsoft YaHei",sans-serif!important;color:#334851!important;text-indent:0!important;box-shadow:0 3px 9px #344f5b04;}
+article:has(> header > small) blockquote:nth-of-type(even) > p {background:#fbfaf6!important;border-color:#e3dfd3!important;}
+article:has(> header > small) blockquote > p::before {content:none!important;}
+article:has(> header > small) section > figure {margin:24px 0!important;}
+article:has(> header > small) section > figure > img {width:100%;max-height:340px;object-fit:cover;object-position:50% 25%;border-radius:4px;opacity:.9;}
+article:has(> header > small) section > figure > figcaption {font-size:11px;color:#798990;text-align:center;}
+article:has(> header > small) section > footer {display:flex;justify-content:space-between;gap:10px;margin-top:28px;padding-top:14px;border-top:1px solid #e2e8ea;color:#71858e;font:10px/1.7 "Segoe UI","Microsoft YaHei",sans-serif;letter-spacing:.1em;}
+article:has(> header > small) a {color:#426f7e!important;text-underline-offset:3px;}
+article:has(> header > small) summary:focus-visible {outline:2px solid #658b99;outline-offset:2px;}
+article:has(> header > small) summary:hover {background:#eaf1f3;}
+/* 原生宿主：只在含本主题消息时扩宽，不劫持菜单、编辑器与其他卡。 */
+.max-w-2xl:has(article > header > small) {max-width:1160px!important;}
+.is-assistant:has(article > header > small) {width:100%!important;max-width:100%!important;}
+.is-assistant:has(article > header > small) > div {background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;max-width:100%!important;}
+.custom-styles:has(article > header > small) {background:linear-gradient(90deg,#edf1f3d9,#f5f6f4ed 45%,#f4f4f0b8),url("https://hykhxy.github.io/sao-utils2-online/g/02.webp") right center/auto 100vh fixed no-repeat,#eef2f3!important;}
+.custom-styles:has(article > header > small) #prompt-input {background:linear-gradient(transparent,#f0f3f4 35%)!important;color:#344b55;}
+.custom-styles:has(article > header > small) #prompt-input textarea {color:#344b55!important;caret-color:#54818e;}
+.custom-styles:has(article > header > small) #prompt-input [data-slot="input-group"] {background:#fffffff2!important;border:1px solid #cedce2!important;box-shadow:0 5px 20px #38505c0b!important;}
+.custom-styles:has(article > header > small) .is-user > div:first-child {background:#f4f8faf2!important;border:1px solid #cddce3!important;color:#344b55!important;box-shadow:none!important;border-radius:12px 3px 12px 12px!important;}
+/* 旧楼层兼容：历史内容仍显示，后续楼层改用新语义结构。 */
+.sao-reply {color:#293842!important;background:#fcfcfa!important;border:1px solid #d9e2e6;border-radius:6px;padding:18px!important;font:15px/2 "Microsoft YaHei",sans-serif;}
+.sao-reply .sao-think {display:none!important;}
+.sao-reply .sao-hud {padding:14px;background:#eef4f5;color:#344b55;}
+.sao-reply .sao-nav {display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+.sao-reply .sao-pn {display:block!important;margin:16px 0;color:#293842!important;}
+.sao-reply .sao-pn:not([data-p="0"]) {padding:14px;border-top:1px solid #d9e2e6;font-size:12px;}
+@keyframes sao-arrive {from {opacity:.65;transform:translateY(3px);}to {opacity:1;transform:translateY(0);}}
+@media (max-width:760px) {
+  article:has(> header > small) {grid-template-columns:64px minmax(0,1fr);border-radius:5px;}
+  article:has(> header > small) > header {padding:17px 16px 14px!important;}
+  article:has(> header > small) > header > h2 {font-size:20px!important;}
+  article:has(> header > small) > header > small {font-size:8px;letter-spacing:.13em;}
+  article:has(> header > small) > header > p {font-size:10px;}
+  article:has(> header > small) > aside {padding:15px 6px!important;overflow:visible;}
+  article:has(> header > small) > aside > figure > img {height:58px!important;object-position:50% 8%;}
+  article:has(> header > small) > aside > figure > figcaption {font-size:7px;letter-spacing:0;}
+  article:has(> header > small) > aside > dl {display:none;}
+  article:has(> header > small) > aside > details {position:static;}
+  article:has(> header > small) > aside > details > summary {padding:10px 0!important;font-size:10px;letter-spacing:0;text-align:center;}
+  article:has(> header > small) > aside > details > summary::before,article:has(> header > small) > aside > details > summary::after {content:none;}
+  article:has(> header > small) > aside > details[open] {position:relative;z-index:5;}
+  article:has(> header > small) > aside > details[open] > :not(summary) {position:relative;width:clamp(190px,60vw,300px);margin:0!important;padding:12px!important;left:51px;background:#fcfdfd;border:1px solid #d5e1e6;box-shadow:6px 8px 20px #263b4a12;}
+  article:has(> header > small) > aside > details[open] > :not(summary) + :not(summary) {border-top:0;box-shadow:none;}
+  article:has(> header > small) > aside > details[open] > progress {box-sizing:border-box;height:7px;padding:0!important;}
+  article:has(> header > small) > section {padding:19px 15px 26px!important;}
+  article:has(> header > small) > section > p {font-size:15px!important;line-height:2.1!important;text-align:left;}
+  article:has(> header > small) blockquote {grid-template-columns:32px minmax(0,1fr);column-gap:8px;margin:19px 0 23px!important;}
+  article:has(> header > small) blockquote > img {width:32px!important;height:38px!important;}
+  article:has(> header > small) blockquote > picture {width:32px;height:38px;}
+  article:has(> header > small) blockquote > picture > img {width:96px!important;height:144px!important;left:-32px;top:-7px;}
+  article:has(> header > small) blockquote > p {font-size:14px!important;padding:10px 11px!important;line-height:1.95!important;}
+}
+@media (prefers-reduced-motion:reduce) {article:has(> header > small),article:has(> header > small) * {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+@media print {article:has(> header > small) {display:block!important;box-shadow:none;}article:has(> header > small) > aside {display:none;}}
+</style></head><body><div class="custom-styles"><main><div class="preview-note"><strong>刀剑神域 · 白色原生聊天</strong><br>原生消息格式预览 · 左侧栏可点击 · 公开图片外链 · 非对话服务</div><div class="is-user"><div>我看了看菜单，退出选项好像不见了。广场上有人知道是怎么回事吗？</div></div><div class="is-assistant"><div><link rel="preload" as="image" href="https://hykhxy.github.io/sao-utils2-online/g/01.webp"/><article>
+<header><small>SWORD ART ONLINE · LINK START</small><h2>第一层 · 还未响起的公告</h2><p>2022年11月6日 ｜ 起始之镇 · 中央广场 ｜ 傍晚</p></header>
+<aside>
+<figure><img src="https://hykhxy.github.io/sao-utils2-online/g/01.webp" alt="桐人立绘"/><figcaption>AINCRAD · WORLD RECORD</figcaption></figure>
+<dl><dt>角色</dt><dd>旅人</dd><dt>等级</dt><dd>未确认</dd><dt>生命</dt><dd>未确认</dd><dt>位置</dt><dd>起始之镇</dd></dl>
+<details name="rili-details:preview-0:sao-side"><summary>状态</summary><dl><dt>身份</dt><dd>未确认</dd><dt>体力</dt><dd>未确认</dd><dt>货币</dt><dd>未确认</dd></dl><p>只填已知状态；HP 有确切数字才加 progress。</p></details>
+<details name="rili-details:preview-0:sao-side"><summary>同伴</summary><ul><li><img src="https://hykhxy.github.io/sao-utils2-online/g/01.webp" alt="桐人"/><b>桐人</b><small>初次相遇 · 留意公告</small></li></ul></details>
+<details name="rili-details:preview-0:sao-side"><summary>装备</summary><dl><dt>武器</dt><dd>未确认</dd><dt>技能</dt><dd>未确认</dd></dl></details>
+<details name="rili-details:preview-0:sao-side"><summary>事件</summary><p>正在发生或尚未处理的事；没有则写暂无。</p></details>
+<details name="rili-details:preview-0:sao-side"><summary>记忆</summary><p>短期 n/7 · 长期 n/7 · 永久 n 条</p><details><summary>S编号 · 已知时间地点</summary><p>本轮为格式预览，没有新增正式记忆。</p></details><p>变化：原来 → 现在；原因。没有新事则写本轮无新增。</p></details>
+</aside>
+<section>
+<p>起始之镇的钟声越过红瓦屋顶，最后一缕回音停在石板路尽头。喷泉旁的玩家比刚才少了一些，几个还穿着初始装备的人围着地图争论，谁也没真往城门走。街边烤炉里传出面包的香气，店主把刚出炉的圆面包放进藤篮，蒸汽在傍晚的光里慢慢散开。这里的一切都像精心安排的欢迎仪式，只有菜单最下方空缺的位置，让这份热闹显得有些不对劲。</p>
+<p>黑发少年停在公告牌边，手指在半透明的窗口上划了一下，又抬眼看向广场中央。他身后的刀鞘轻轻碰到石墙，发出很短的一声。他似乎也在寻找什么，但没有立刻询问旁人，只把窗口收起，往人群外侧退了半步，给赶着经过的行人让出道路。</p>
+<blockquote><picture><img src="https://hykhxy.github.io/sao-utils2-online/g/01.webp" alt="桐人"/></picture><cite>桐人</cite><p>「你也发现了吗？退出选项不见了。我试过重新打开菜单，不像是单纯的显示问题。先别急着去野外，等一下看看系统有没有新的公告。」</p></blockquote>
+<p>他说话的声音不高，目光却始终留意着周围。一个红发青年从喷泉另一边跑来，刚停稳就撑住膝盖喘气，护额被汗水贴在额前。他本来像是准备抱怨什么，看见陌生人在旁边，又把已经到了嘴边的话收了回去，直起身子整理了一下衣领。</p>
+<blockquote><picture><img src="https://hykhxy.github.io/sao-utils2-online/g/11.webp" alt="克莱因"/></picture><cite>克莱因</cite><p>「广场那头也是一样。有个人还说是开服活动，可活动总得有个说明吧？我跟朋友约好了集合，他们现在还在找路。对了，我叫克莱因，你怎么称呼？」</p></blockquote>
+<p>他没有催着等答案，而是侧身望向通往商店街的路口。那里立着一排浅色招牌，药水、武器和旅店的标志在风里轻晃。几个玩家把公共频道的消息念给同伴听，语气一个比一个急。桐人听到其中一句，眉头稍稍收紧，却没有把未经确认的说法接下去。他只是重新检查背包，把剩下的药水移到比较顺手的位置。</p>
+<p>夕阳还照着钟楼的上半截，广场边缘却已经出现大片阴影。卖面包的店主照旧收拾着篮子，对玩家之间逐渐升起的不安毫无反应。有人问他退出的方法，他仍用熟悉的笑容介绍今日的商品。那人又问了一遍，得到一模一样的回答，终于沉默下来。短暂的安静像一阵凉风，从柜台前传到旁边排队的人群里。</p>
+<blockquote><picture><img src="https://hykhxy.github.io/sao-utils2-online/g/01.webp" alt="桐人"/></picture><cite>桐人</cite><p>「店铺里的服务还是原来的程序。真要找消息，最好看正式公告，或者确认自己身边发生的事。现在频道里的说法太多，有些人可能只是跟着别人转述。」</p></blockquote>
+<p>克莱因低声应了一句，手却又一次伸向自己的菜单。透明窗口亮起来的时候，他脸上的笑意淡了不少。他将各个页面依次翻过，最后在空白的位置停了两秒，才把手放下。附近的新人也注意到了他的动作，几道目光随之聚过来，又因为没有得到答案而移开。没有人愿意率先承认，这个小小的缺口正在改变整座广场的气氛。</p>
+<p>远处忽然传来朋友的招呼声。克莱因朝路口挥了挥手，又转回来，把刚才一直攥着的地图展开。纸面上标着起始之镇的街道、商店和出口，有几处地方被他用不太整齐的线圈了起来。他指着离喷泉不远的一间旅店，说那里至少有可以坐下说话的大厅。桐人看了看位置，没有替任何人决定，只提醒大厅有另一扇朝向小巷的门，集合时最好讲清楚入口。</p>
+<blockquote><picture><img src="https://hykhxy.github.io/sao-utils2-online/g/11.webp" alt="克莱因"/></picture><cite>克莱因</cite><p>「那我先把朋友叫过来。你要是愿意，可以在这边等一会儿；想先去商店看看也行。我就在喷泉旁边，不会突然跑得没影。总得先把人找齐，大家也好互相照应。」</p></blockquote>
+<p>广场上的光线又暗了一点，水面映着细碎的橙金色。桐人把背靠上公告牌旁的石柱，留出一段不至于显得逼近的距离。他没有再追问姓名，也没有把手伸向别人的菜单。风从城门方向吹过来，带着青草和尘土的味道，吹动他外套下摆。他的视线从地图移到街道，又回到眼前，像是在等待一个真正属于对方的回答。</p>
+<p>此时还没有新的公告出现。喷泉依旧流着水，钟楼下的人群却慢慢聚得更密。有人选择留下，有人沿街寻找同伴，刚才只顾着看风景的玩家也开始认真检查自己的物品。那张摊开的地图仍放在石台上，旅店、商店和城门都近在眼前。克莱因向赶来的朋友示意放慢脚步，随后站到旁边，将接下来的话头留了出来。</p>
+<footer><span>LINK STABLE</span><span>正文 1335 汉字 · 格式示例</span></footer></section></article></div></div><div id="prompt-input"><div data-slot="input-group">这只是界面预览；正式对话请导入修复卡后在 TalkAI 进行。</div></div></main></div></body></html>

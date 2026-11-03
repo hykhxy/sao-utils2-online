@@ -1,0 +1,106 @@
+/* SAO · 原生白色聊天。语义结构是主选择器，不依赖 class/id/脚本。 */
+article:has(> header > small) {
+  --sao-paper:#fcfcfa;--sao-ink:#293842;--sao-muted:#657782;--sao-line:#d9e2e6;--sao-accent:#54818e;--sao-gold:#ac8c56;
+  display:grid!important;grid-template-columns:216px minmax(0,1fr);grid-template-rows:auto 1fr;
+  width:100%;max-width:1160px;min-width:0;margin:12px auto 24px!important;padding:0!important;
+  border:1px solid var(--sao-line)!important;border-radius:8px!important;overflow:clip;isolation:isolate;
+  color:var(--sao-ink)!important;background:var(--sao-paper)!important;
+  box-shadow:0 10px 35px #324f5e0c;line-height:1.9;font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  animation:sao-arrive .35s ease-out;
+}
+article:has(> header > small) * {box-sizing:border-box;min-width:0;}
+article:has(> header > small) > header {
+  grid-column:1/-1;position:relative;margin:0;padding:23px 30px 19px!important;border-bottom:1px solid var(--sao-line);
+  background:linear-gradient(100deg,#fff,#f4f8f9 70%,#f8f6ef);color:var(--sao-ink)!important;
+}
+article:has(> header > small) > header::before {content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,#9dbac3,#d9e5e7 50%,#d7c69f);opacity:.7;pointer-events:none;}
+article:has(> header > small) > header > small {display:block;font:600 10px/1.7 "Segoe UI",sans-serif;letter-spacing:.22em;color:#6c8993;}
+article:has(> header > small) > header > h2 {margin:5px 0 6px!important;padding:0!important;font:500 23px/1.5 "Songti SC",SimSun,serif!important;letter-spacing:.06em;color:#293842!important;border:0!important;}
+article:has(> header > small) > header > p {margin:0!important;font:12px/1.8 "Microsoft YaHei",sans-serif;color:#657782!important;}
+article:has(> header > small) > aside {grid-column:1;grid-row:2;position:relative;padding:22px 16px 28px!important;background:linear-gradient(#f2f6f7e8,#fafbfaf5);border-right:1px solid var(--sao-line);font:12px/1.8 "Microsoft YaHei",sans-serif;color:var(--sao-ink);}
+article:has(> header > small) > aside > figure {margin:0 0 19px!important;text-align:center;}
+article:has(> header > small) > aside > figure > img {display:block!important;width:100%!important;height:210px!important;object-fit:cover!important;object-position:50% 18%;border-radius:4px;border:1px solid #e1e8e9;margin:0 auto 9px!important;opacity:.94;}
+article:has(> header > small) > aside > figure > figcaption {font:600 10px/1.8 "Segoe UI",sans-serif;letter-spacing:.15em;color:#65818b;}
+article:has(> header > small) > aside > details {margin:0 0 9px!important;border:1px solid #dce5e8!important;border-radius:4px;background:#ffffffb5;color:var(--sao-ink);}
+article:has(> header > small) > aside > details > summary {list-style:none!important;cursor:pointer;padding:10px 11px!important;font:500 12px/1.7 "Microsoft YaHei",sans-serif;letter-spacing:.07em;user-select:none;color:#456773!important;transition:background .2s;}
+article:has(> header > small) > aside > details > summary::-webkit-details-marker {display:none;}
+article:has(> header > small) > aside > details > summary::before {content:"◇";margin-right:7px;color:var(--sao-gold);}
+article:has(> header > small) > aside > details > summary::after {content:"＋";float:right;font-size:11px;color:#7f949c;}
+article:has(> header > small) > aside > details[open] > summary {border-bottom:1px solid #e2e9ec;background:#edf4f5;color:#344f5a!important;}
+article:has(> header > small) > aside > details[open] > summary::after {content:"−";}
+article:has(> header > small) > aside > details > :not(summary) {margin:10px!important;}
+article:has(> header > small) > aside p {font:12px/1.9 "Microsoft YaHei",sans-serif!important;text-indent:0!important;color:#536871!important;overflow-wrap:anywhere;}
+article:has(> header > small) dl {display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px 6px;}
+article:has(> header > small) dt {color:#7b8990;font-size:11px;}
+article:has(> header > small) dd {margin:0!important;color:#334b56;overflow-wrap:anywhere;}
+article:has(> header > small) progress {display:block;width:calc(100% - 20px);height:6px;accent-color:#83a88b;border:0;background:#e5ecea;border-radius:0;overflow:hidden;}
+article:has(> header > small) progress::-webkit-progress-bar {background:#e5ecea;}
+article:has(> header > small) progress::-webkit-progress-value {background:linear-gradient(90deg,#b6cda7,#7d9e89);}
+article:has(> header > small) aside ul {list-style:none!important;padding:0!important;}
+article:has(> header > small) aside li {margin:10px 0!important;padding:0!important;line-height:1.8;overflow-wrap:anywhere;}
+article:has(> header > small) aside li > img {width:38px!important;height:38px!important;object-fit:cover;object-position:50% 8%;float:left;margin:0 8px 3px 0!important;border-radius:50%;border:1px solid #c8d6dc;}
+article:has(> header > small) aside li > b {display:block;font-size:12px;font-weight:500;}
+article:has(> header > small) aside li > small {font-size:10px;color:#72838d;}
+article:has(> header > small) > section {grid-column:2;grid-row:2;position:relative;padding:28px 32px 38px!important;color:#293842!important;background:linear-gradient(#fffffff2,#fcfcfaf5);min-width:0;overflow-wrap:anywhere;}
+article:has(> header > small) > section::before {content:"";pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at 100% 0,#b3d8e414,transparent 48%);z-index:-1;}
+article:has(> header > small) > section > p {margin:0 0 1.35em!important;font:16px/2.15 "Songti SC","STSong","SimSun",serif!important;letter-spacing:.025em;text-indent:2em;text-align:justify;color:#293842!important;}
+article:has(> header > small) blockquote {display:grid!important;grid-template-columns:48px minmax(0,1fr);column-gap:13px;position:relative;margin:25px 0 28px!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;color:#293842!important;quotes:none;}
+article:has(> header > small) blockquote::before,article:has(> header > small) blockquote::after {content:none!important;}
+article:has(> header > small) blockquote > img {display:block!important;grid-column:1;grid-row:1/3;width:48px!important;height:56px!important;object-fit:cover!important;object-position:50% 8%;margin:3px 0 0!important;border:1px solid #bdcfd7!important;border-radius:50%!important;background:#eff4f6;}
+article:has(> header > small) blockquote > picture {display:block;grid-column:1;grid-row:1/3;position:relative;width:48px;height:56px;margin-top:3px;border:1px solid #bdcfd7;border-radius:50%;overflow:hidden;background:#eff4f6;}
+article:has(> header > small) blockquote > picture > img {position:absolute!important;display:block!important;width:144px!important;max-width:none!important;height:216px!important;left:-48px;top:-10px;object-fit:cover!important;margin:0!important;border:0!important;}
+article:has(> header > small) blockquote > cite {grid-column:2;display:block;font:500 11px/1.8 "Microsoft YaHei",sans-serif!important;letter-spacing:.05em;color:#687f89!important;margin:0 0 5px!important;}
+article:has(> header > small) blockquote > p {grid-column:2;margin:0!important;padding:13px 17px!important;background:#f7fafb!important;border:1px solid #d5e1e6!important;border-radius:3px 12px 12px 12px;font:15px/1.95 "Microsoft YaHei",sans-serif!important;color:#334851!important;text-indent:0!important;box-shadow:0 3px 9px #344f5b04;}
+article:has(> header > small) blockquote:nth-of-type(even) > p {background:#fbfaf6!important;border-color:#e3dfd3!important;}
+article:has(> header > small) blockquote > p::before {content:none!important;}
+article:has(> header > small) section > figure {margin:24px 0!important;}
+article:has(> header > small) section > figure > img {width:100%;max-height:340px;object-fit:cover;object-position:50% 25%;border-radius:4px;opacity:.9;}
+article:has(> header > small) section > figure > figcaption {font-size:11px;color:#798990;text-align:center;}
+article:has(> header > small) section > footer {display:flex;justify-content:space-between;gap:10px;margin-top:28px;padding-top:14px;border-top:1px solid #e2e8ea;color:#71858e;font:10px/1.7 "Segoe UI","Microsoft YaHei",sans-serif;letter-spacing:.1em;}
+article:has(> header > small) a {color:#426f7e!important;text-underline-offset:3px;}
+article:has(> header > small) summary:focus-visible {outline:2px solid #658b99;outline-offset:2px;}
+article:has(> header > small) summary:hover {background:#eaf1f3;}
+/* 原生宿主：只在含本主题消息时扩宽，不劫持菜单、编辑器与其他卡。 */
+.max-w-2xl:has(article > header > small) {max-width:1160px!important;}
+.is-assistant:has(article > header > small) {width:100%!important;max-width:100%!important;}
+.is-assistant:has(article > header > small) > div {background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;max-width:100%!important;}
+.custom-styles:has(article > header > small) {background:linear-gradient(90deg,#edf1f3d9,#f5f6f4ed 45%,#f4f4f0b8),url("https://hykhxy.github.io/sao-utils2-online/g/02.webp") right center/auto 100vh fixed no-repeat,#eef2f3!important;}
+.custom-styles:has(article > header > small) #prompt-input {background:linear-gradient(transparent,#f0f3f4 35%)!important;color:#344b55;}
+.custom-styles:has(article > header > small) #prompt-input textarea {color:#344b55!important;caret-color:#54818e;}
+.custom-styles:has(article > header > small) #prompt-input [data-slot="input-group"] {background:#fffffff2!important;border:1px solid #cedce2!important;box-shadow:0 5px 20px #38505c0b!important;}
+.custom-styles:has(article > header > small) .is-user > div:first-child {background:#f4f8faf2!important;border:1px solid #cddce3!important;color:#344b55!important;box-shadow:none!important;border-radius:12px 3px 12px 12px!important;}
+/* 旧楼层兼容：历史内容仍显示，后续楼层改用新语义结构。 */
+.sao-reply {color:#293842!important;background:#fcfcfa!important;border:1px solid #d9e2e6;border-radius:6px;padding:18px!important;font:15px/2 "Microsoft YaHei",sans-serif;}
+.sao-reply .sao-think {display:none!important;}
+.sao-reply .sao-hud {padding:14px;background:#eef4f5;color:#344b55;}
+.sao-reply .sao-nav {display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+.sao-reply .sao-pn {display:block!important;margin:16px 0;color:#293842!important;}
+.sao-reply .sao-pn:not([data-p="0"]) {padding:14px;border-top:1px solid #d9e2e6;font-size:12px;}
+@keyframes sao-arrive {from {opacity:.65;transform:translateY(3px);}to {opacity:1;transform:translateY(0);}}
+@media (max-width:760px) {
+  article:has(> header > small) {grid-template-columns:64px minmax(0,1fr);border-radius:5px;}
+  article:has(> header > small) > header {padding:17px 16px 14px!important;}
+  article:has(> header > small) > header > h2 {font-size:20px!important;}
+  article:has(> header > small) > header > small {font-size:8px;letter-spacing:.13em;}
+  article:has(> header > small) > header > p {font-size:10px;}
+  article:has(> header > small) > aside {padding:15px 6px!important;overflow:visible;}
+  article:has(> header > small) > aside > figure > img {height:58px!important;object-position:50% 8%;}
+  article:has(> header > small) > aside > figure > figcaption {font-size:7px;letter-spacing:0;}
+  article:has(> header > small) > aside > dl {display:none;}
+  article:has(> header > small) > aside > details {position:static;}
+  article:has(> header > small) > aside > details > summary {padding:10px 0!important;font-size:10px;letter-spacing:0;text-align:center;}
+  article:has(> header > small) > aside > details > summary::before,article:has(> header > small) > aside > details > summary::after {content:none;}
+  article:has(> header > small) > aside > details[open] {position:relative;z-index:5;}
+  article:has(> header > small) > aside > details[open] > :not(summary) {position:relative;width:clamp(190px,60vw,300px);margin:0!important;padding:12px!important;left:51px;background:#fcfdfd;border:1px solid #d5e1e6;box-shadow:6px 8px 20px #263b4a12;}
+  article:has(> header > small) > aside > details[open] > :not(summary) + :not(summary) {border-top:0;box-shadow:none;}
+  article:has(> header > small) > aside > details[open] > progress {box-sizing:border-box;height:7px;padding:0!important;}
+  article:has(> header > small) > section {padding:19px 15px 26px!important;}
+  article:has(> header > small) > section > p {font-size:15px!important;line-height:2.1!important;text-align:left;}
+  article:has(> header > small) blockquote {grid-template-columns:32px minmax(0,1fr);column-gap:8px;margin:19px 0 23px!important;}
+  article:has(> header > small) blockquote > img {width:32px!important;height:38px!important;}
+  article:has(> header > small) blockquote > picture {width:32px;height:38px;}
+  article:has(> header > small) blockquote > picture > img {width:96px!important;height:144px!important;left:-32px;top:-7px;}
+  article:has(> header > small) blockquote > p {font-size:14px!important;padding:10px 11px!important;line-height:1.95!important;}
+}
+@media (prefers-reduced-motion:reduce) {article:has(> header > small),article:has(> header > small) * {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+@media print {article:has(> header > small) {display:block!important;box-shadow:none;}article:has(> header > small) > aside {display:none;}}
