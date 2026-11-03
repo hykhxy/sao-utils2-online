@@ -133,7 +133,7 @@ article:has(> header > small) > section > details:first-child > ol > li > b::bef
 article:has(> header > small) > section > details:first-child > ol > li > p {font:13px/2 "Microsoft YaHei",sans-serif;color:#526a75;text-indent:0;margin:9px 0 15px!important;}
 /* 点击圆头像后，弹窗锚在当前消息内；不使用遮挡整个网站的fixed层。 */
 article:has(> header > small) > aside > details[open]::before {content:"";position:absolute;inset:118px 0 0 88px;background:#e6f0f78f;backdrop-filter:blur(4px);z-index:18;pointer-events:none;}
-article:has(> header > small) > aside > details[open] > section {position:absolute!important;z-index:20;top:138px;left:104px;right:20px;width:auto!important;max-height:660px;overflow:auto;display:grid;grid-template-columns:1fr;gap:0 22px;margin:0!important;padding:20px!important;border:1px solid #adc8d5;border-radius:12px;background:linear-gradient(#fcfffff5,#fffaf0f7);box-shadow:0 18px 55px #2851662b;font:13px/1.9 "Microsoft YaHei",sans-serif;color:#344e5e;overscroll-behavior:contain;}
+article:has(> header > small) > aside > details[open] > section {position:absolute!important;z-index:20;top:138px;left:104px;right:20px;width:auto!important;max-height:min(660px,calc(100vh - 380px));overflow:auto;display:grid;grid-template-columns:1fr;gap:0 22px;margin:0!important;padding:20px!important;border:1px solid #adc8d5;border-radius:12px;background:linear-gradient(#fcfffff5,#fffaf0f7);box-shadow:0 18px 55px #2851662b;font:13px/1.9 "Microsoft YaHei",sans-serif;color:#344e5e;overscroll-behavior:contain;}
 article:has(> header > small) > aside > details[open] > section:has(> figure) {grid-template-columns:220px minmax(0,1fr);}
 article:has(> header > small) > aside > details > section > header {grid-column:1/-1;padding:0 0 12px;margin:0 0 16px;border-bottom:1px solid #d1e0e7;display:flex;align-items:center;justify-content:space-between;gap:12px;}
 article:has(> header > small) > aside > details > section > header > h3 {margin:0;font:500 20px/1.5 "Songti SC",SimSun,serif;color:#385e74;}
@@ -177,7 +177,7 @@ article:has(> header > small) blockquote > picture > img[src*="npc-"] {width:48p
  article:has(> header > small) > section > details:first-child > ol {padding:0 11px 11px!important;}
  article:has(> header > small) > section > details:first-child > ol > li > p {font-size:12px;}
  article:has(> header > small) > aside > details[open]::before {inset:110px 0 0 62px;}
- article:has(> header > small) > aside > details[open] > section {left:65px;right:6px;top:128px;padding:12px!important;max-height:620px;border-radius:7px;}
+ article:has(> header > small) > aside > details[open] > section {left:65px;right:6px;top:128px;padding:12px!important;max-height:calc(100vh - 380px);border-radius:7px;}
  article:has(> header > small) > aside > details[open] > section:has(> figure) {grid-template-columns:76px minmax(0,1fr);gap:10px;}
  article:has(> header > small) > aside > details > section > header {flex-wrap:wrap;gap:3px;margin-bottom:10px;}
  article:has(> header > small) > aside > details > section > header > h3 {font-size:17px;}
