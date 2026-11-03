@@ -1144,6 +1144,7 @@ const CR_SK=[{h:'基础技能'},['单手剑技','系统剑技'],['索敌','发�
 const CR_TA=[['反应神经','极快的反射'],['剑感','天生的距离感'],['洞察','看穿破绽'],['耐力','长时间作战'],['疾风','敏捷与步法'],['精准','远程命中'],['冷静','危机不乱'],['领袖气质','带领队伍'],['厨艺天赋','料理加成'],['匠心','锻造与强化'],['兽缘','与使魔亲近'],['逆境爆发','绝境越战越强'],['悟性','快速学会招式'],['幸运','掉落与机遇'],['治愈','回复与支援'],['空间感','飞行与立体战斗']];
 const CR_LV=[['新手','刚拿起武器'],['普通玩家','会基本剑技'],['熟练玩家','稳定的中层水平'],['老练高手','经验丰富'],['攻略组水准','前线战力'],['顶尖高手','同辈中的佼佼者'],['传说级','需要剧情积累']];
 const CR_GD=[['男','♂'],['女','♀'],['其他','自行填写'],['不指定','交给故事']];
+const CR_GALLERY=[{"id":"adult-man","label":"帅气成年男性","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-man.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-man.png"},{"id":"young-man","label":"帅气青年","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-man.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-man.png"},{"id":"adult-woman","label":"美丽成年女性","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-woman.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-woman.png"},{"id":"young-woman","label":"美丽少女","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-woman.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-woman.png"}];
 const CF={name:'',gender:{sel:[],cus:'',on:false},tl:{sel:[],cus:'',on:false},wp:{sel:[],cus:'',on:false},sk:{sel:[],cus:'',on:false},ta:{sel:[],cus:'',on:false},lv:{sel:[],cus:'',on:false},note:'',pic:null};
 const CFG={gender:{multi:0},tl:{multi:0},wp:{multi:0},sk:{multi:1,max:3},ta:{multi:1,max:2},lv:{multi:0}};
 const val=k=>{const f=CF[k];const a=f.sel.slice();if(f.on&&f.cus.trim())a.push(f.cus.trim());return a.join('、')};
@@ -1164,9 +1165,10 @@ ${secHtml('04','武器','WEAPON · 单选','wp',CR_WP)}
 ${secHtml('05','初始技能','SKILL · 最多选 3 个','sk',CR_SK)}
 ${secHtml('06','天赋','TALENT · 最多选 2 个（原创天赋）','ta',CR_TA)}
 ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
-<div class="csec"><h4><i>08</i>立绘<small>PORTRAIT · 图片外链</small></h4>
+<div class="csec"><h4><i>08</i>立绘<small>PORTRAIT · 公共立绘 / 自填外链</small></h4>
+<div class="pics" role="group" aria-label="选择公共立绘">${CR_GALLERY.map(p=>`<button class="pic" type="button" data-portrait-id="${p.id}" aria-label="选择${p.label}" aria-pressed="false"><img src="${p.src}" alt="${p.label}立绘" loading="lazy" referrerpolicy="no-referrer"><span>${p.label}</span></button>`).join('')}</div>
 <div class="urow"><input type="url" id="curl" aria-label="角色立绘外链" placeholder="粘贴公开图片外链 https://…" autocomplete="off" spellcheck="false" inputmode="url"><button class="sbtn sm" data-c="useurl" type="button">预览立绘</button></div>
-<div class="tip">直接填写可公开访问的 HTTPS 图片链接，可留空。点击「预览立绘」或「创建角色」会加载图片，角色设定会带上立绘URL。</div></div>
+<div class="tip">点击上方四张公共立绘即可选择并保存外链，也可自填 HTTPS 图片链接。创建后复制角色设定，立绘URL和头像URL会一并带出；请手动发送到聊天。图片只是外观示意，不自动授予图中装备。</div></div>
 
 <div class="csec"><h4><i>09</i>备注 / 背景故事<small>NOTE · 可选</small></h4><textarea id="cnote" maxlength="400" placeholder="外貌、性格、为什么来到这个世界……（可留空）"></textarea></div>
 </div>
@@ -1175,6 +1177,7 @@ ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
 <div class="cres" id="cres"></div></div>
 <div class="cfoot"><div class="tip">姓名取自登录时填写的名字；其余都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。立绘使用公开 HTTPS 图片外链，复制角色设定时会一并带上链接。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
 function crSync(){
+  $$('#cre [data-portrait-id]').forEach(p=>{const on=!!CF.pic&&CR_GALLERY.some(g=>g.id===p.dataset.portraitId&&g.src===CF.pic.src);p.classList.toggle('on',on);p.setAttribute('aria-pressed',String(on))});
   $$('#cre .chip').forEach(c=>{const k=c.dataset.k,f=CF[k];if(c.dataset.c)c.classList.toggle('on',f.on);else c.classList.toggle('on',f.sel.includes(c.dataset.v))});
   $$('#cre .cin').forEach(i=>i.classList.toggle('on',CF[i.dataset.k].on));
   $('#pname').textContent=CF.name.trim()||'—';$('#cnamev').textContent=CF.name.trim()||'（登录后自动填入）';
@@ -1183,10 +1186,12 @@ function crSync(){
 }
 function crReset(){crUrlRequest++;CF.note='';CF.pic=null;for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}$('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync()}
 function crPick(k,v){const f=CF[k],g=CFG[k];const i=f.sel.indexOf(v);if(i>=0){f.sel.splice(i,1)}else{if(!g.multi)f.sel=[v];else{if(f.sel.length>=g.max){toast('最多只能选 '+g.max+' 个，可以取消一个再选');return}f.sel.push(v)}}crSync()}
-function crPicSet(src,pre,label){CF.pic={src,pre,label};$('#curl').value=src;crSync()}
+function crPicSet(src,pre,label){const p=crPortraitChoice(src);CF.pic={src,pre:-1,label:'url',avatar:p?p.avatar:src,choice:p?p.id:'custom-url',name:p?p.label:'自定义外链'};$('#curl').value=src;crSync();crStore()}
+function crPortraitChoice(src){return CR_GALLERY.find(p=>p.src===src)||null}
+function crChoosePortrait(id){const p=CR_GALLERY.find(p=>p.id===id);if(!p)return;$('#curl').value=p.src;crUrl()}
 function crToText(){
   const L=['【我的角色】','姓名：'+(CF.name.trim()||'未命名'),'性别：'+(val('gender')||'未指定'),'时间线：'+(val('tl')||'未指定'),'武器：'+(val('wp')||'未指定'),'初始技能：'+(val('sk')||'未指定'),'天赋：'+(val('ta')||'未指定'),'操作水平：'+(val('lv')||'未指定')];
-  if(CF.pic&&crPortraitUrl(CF.pic.src))L.push('立绘URL：'+CF.pic.src);
+  if(CF.pic&&crPortraitUrl(CF.pic.src)){const p=crPortraitChoice(CF.pic.src);L.push('立绘ID：'+(p?p.id:'custom-url'),'立绘名称：'+(p?p.label:'自定义外链'),'立绘URL：'+CF.pic.src,'头像URL：'+(crPortraitUrl(CF.pic.avatar)||CF.pic.src))}
   if(CF.note.trim())L.push('备注：'+CF.note.trim());
   return L.join('\n')}
 function crShowResult(){
@@ -1195,8 +1200,9 @@ function crShowResult(){
   <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 返回修改</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
   <div style="margin-top:14px;font-size:12px;color:#8fb2c6;line-height:1.7">把「复制角色设定」粘贴到聊天里发给角色卡，就能带着这个身份进入故事。角色已保存在这台设备的浏览器里，下次打开会自动恢复。</div>`;
   cre.classList.add('done')}
-function crSave(){try{parent!==window&&parent.postMessage({type:'sao-character',name:CF.name,text:crToText()},'*')}catch(e){}LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
-function crLoad(){const s=LS.get('sao_char',null);if(!s)return;crUrlRequest++;CF.note=s.note||'';const u=crPortraitUrl(s.pic&&s.pic.src);CF.pic=u?{src:u,pre:-1,label:'url'}:null;$('#curl').value=u;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
+function crStore(){LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
+function crSave(){try{parent!==window&&parent.postMessage({type:'sao-character',name:CF.name,text:crToText()},'*')}catch(e){}crStore()}
+function crLoad(){const s=LS.get('sao_char',null);if(!s)return;crUrlRequest++;CF.note=s.note||'';const u=crPortraitUrl(s.pic&&s.pic.src),p=crPortraitChoice(u);CF.pic=u?{src:u,pre:-1,label:'url',avatar:p?p.avatar:(crPortraitUrl(s.pic.avatar)||u),choice:p?p.id:'custom-url',name:p?p.label:'自定义外链'}:null;$('#curl').value=u;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
 function crPortraitUrl(value){
   try{const u=new URL(String(value||'').trim());return u.protocol==='https:'&&!u.username&&!u.password?u.href:''}catch(e){return ''}}
 let crUrlRequest=0;
@@ -1215,6 +1221,7 @@ cre.addEventListener('click',e=>{
   e.stopPropagation();
   const ch=e.target.closest('.chip');
   if(ch){const k=ch.dataset.k;if(ch.dataset.c){const f=CF[k];f.on=!f.on;if(f.on&&!CFG[k].multi)f.sel=[];crSync();if(f.on)$(`#cre .cin[data-k=${k}]`).focus()}else{if(CF[ch.dataset.k].on&&!CFG[ch.dataset.k].multi)CF[ch.dataset.k].on=false;crPick(k,ch.dataset.v)}return}
+  const pic=e.target.closest('[data-portrait-id]');if(pic){crChoosePortrait(pic.dataset.portraitId);return}
   const b=e.target.closest('[data-c]');if(!b)return;const v=b.dataset.c;
   if(v==='x')closeCreator();
   else if(v==='useurl')crUrl();

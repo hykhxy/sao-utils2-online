@@ -1,0 +1,42 @@
+[
+  {
+    "id": "adult-man",
+    "name": "帅气成年男性",
+    "portrait_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-man.png",
+    "avatar_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-man.png",
+    "sha256": "ee40726cc70fcbfd229f3c3912d1065104f24ec56dd8dc4287fbbf19e76b6fea",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 3105889
+  },
+  {
+    "id": "young-man",
+    "name": "帅气青年",
+    "portrait_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-man.png",
+    "avatar_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-man.png",
+    "sha256": "56287f9499729e661f77ecaa604035226f43e0d05fc6d5f661766e66174f96de",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 2804403
+  },
+  {
+    "id": "adult-woman",
+    "name": "美丽成年女性",
+    "portrait_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-woman.png",
+    "avatar_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-woman.png",
+    "sha256": "096116da6ee8ba4bf59c5f5b5a28bc64ea060b5d3333e9afdb670f7fc1131f37",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 2814974
+  },
+  {
+    "id": "young-woman",
+    "name": "美丽少女",
+    "portrait_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-woman.png",
+    "avatar_url": "https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-woman.png",
+    "sha256": "443b95569664430524962b8a3fe1b7446bf0214d8e1a23a78d20f532888ae1b1",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 3066052
+  }
+]
