@@ -1144,7 +1144,6 @@ const CR_SK=[{h:'基础技能'},['单手剑技','系统剑技'],['索敌','发�
 const CR_TA=[['反应神经','极快的反射'],['剑感','天生的距离感'],['洞察','看穿破绽'],['耐力','长时间作战'],['疾风','敏捷与步法'],['精准','远程命中'],['冷静','危机不乱'],['领袖气质','带领队伍'],['厨艺天赋','料理加成'],['匠心','锻造与强化'],['兽缘','与使魔亲近'],['逆境爆发','绝境越战越强'],['悟性','快速学会招式'],['幸运','掉落与机遇'],['治愈','回复与支援'],['空间感','飞行与立体战斗']];
 const CR_LV=[['新手','刚拿起武器'],['普通玩家','会基本剑技'],['熟练玩家','稳定的中层水平'],['老练高手','经验丰富'],['攻略组水准','前线战力'],['顶尖高手','同辈中的佼佼者'],['传说级','需要剧情积累']];
 const CR_GD=[['男','♂'],['女','♀'],['其他','自行填写'],['不指定','交给故事']];
-const CR_PIC=[['v/man.webp','v/man_s.webp','成年·帅气男性'],['v/woman.webp','v/woman_s.webp','成年·美丽女性'],['v/boy.webp','v/boy_s.webp','少年男性'],['v/girl.webp','v/girl_s.webp','少年女性']];
 const CF={name:'',gender:{sel:[],cus:'',on:false},tl:{sel:[],cus:'',on:false},wp:{sel:[],cus:'',on:false},sk:{sel:[],cus:'',on:false},ta:{sel:[],cus:'',on:false},lv:{sel:[],cus:'',on:false},note:'',pic:null};
 const CFG={gender:{multi:0},tl:{multi:0},wp:{multi:0},sk:{multi:1,max:3},ta:{multi:1,max:2},lv:{multi:0}};
 const val=k=>{const f=CF[k];const a=f.sel.slice();if(f.on&&f.cus.trim())a.push(f.cus.trim());return a.join('、')};
@@ -1165,29 +1164,29 @@ ${secHtml('04','武器','WEAPON · 单选','wp',CR_WP)}
 ${secHtml('05','初始技能','SKILL · 最多选 3 个','sk',CR_SK)}
 ${secHtml('06','天赋','TALENT · 最多选 2 个（原创天赋）','ta',CR_TA)}
 ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
-<div class="csec"><h4><i>08</i>立绘<small>PORTRAIT · 预设 / 本地上传 / 外链</small></h4>
-<div class="pics">${CR_PIC.map((p,i)=>`<div class="pic" data-p="${i}"><img src="${p[1]}" alt="" loading="lazy"><span>${p[2]}</span></div>`).join('')}</div>
-<div class="urow"><button class="sbtn sm" data-c="upload" type="button">⬆ 本地上传</button><input type="file" id="cfile" accept="image/*" hidden><input type="text" id="curl" placeholder="或粘贴图片外链 https://…" autocomplete="off"><button class="sbtn sm" data-c="useurl" type="button">使用外链</button></div></div>
+<div class="csec"><h4><i>08</i>立绘<small>PORTRAIT · 图片外链</small></h4>
+<div class="urow"><input type="url" id="curl" aria-label="角色立绘外链" placeholder="粘贴公开图片外链 https://…" autocomplete="off" spellcheck="false" inputmode="url"><button class="sbtn sm" data-c="useurl" type="button">预览立绘</button></div>
+<div class="tip">直接填写可公开访问的 HTTPS 图片链接，可留空。点击「预览立绘」或「创建角色」会加载图片，角色设定会带上立绘URL。</div></div>
+
 <div class="csec"><h4><i>09</i>备注 / 背景故事<small>NOTE · 可选</small></h4><textarea id="cnote" maxlength="400" placeholder="外貌、性格、为什么来到这个世界……（可留空）"></textarea></div>
 </div>
 <div class="cprev"><div class="pimg" id="pimg">尚未选择立绘</div><div class="pname" id="pname">—</div>
 <div class="pbars"><div>HP 750 / 750 　LV 1</div><div class="b"><i></i></div><div id="ptags" style="margin-top:8px;line-height:1.7;color:#9fd3f2;font-family:'Microsoft YaHei';font-size:12px;text-align:center"></div></div></div>
 <div class="cres" id="cres"></div></div>
-<div class="cfoot"><div class="tip">姓名取自登录时填写的名字；其余都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。本地上传的图片只在你的浏览器里显示，不会上传到任何服务器。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
+<div class="cfoot"><div class="tip">姓名取自登录时填写的名字；其余都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。立绘使用公开 HTTPS 图片外链，复制角色设定时会一并带上链接。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
 function crSync(){
   $$('#cre .chip').forEach(c=>{const k=c.dataset.k,f=CF[k];if(c.dataset.c)c.classList.toggle('on',f.on);else c.classList.toggle('on',f.sel.includes(c.dataset.v))});
   $$('#cre .cin').forEach(i=>i.classList.toggle('on',CF[i.dataset.k].on));
-  $$('#cre .pic').forEach((p,i)=>p.classList.toggle('on',CF.pic&&CF.pic.pre===i));
   $('#pname').textContent=CF.name.trim()||'—';$('#cnamev').textContent=CF.name.trim()||'（登录后自动填入）';
   const pi=$('#pimg');if(CF.pic){if(pi.dataset.s!==CF.pic.src){pi.dataset.s=CF.pic.src;pi.innerHTML='<img alt="">';pi.firstChild.referrerPolicy='no-referrer';pi.firstChild.src=CF.pic.src}}else{pi.dataset.s='';pi.textContent='尚未选择立绘'}
   $('#ptags').innerHTML=[val('tl'),val('wp'),val('sk'),val('lv')].filter(Boolean).map(esc).join('<br>');
 }
-function crReset(){CF.note='';CF.pic=null;for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}$('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync()}
+function crReset(){crUrlRequest++;CF.note='';CF.pic=null;for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}$('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync()}
 function crPick(k,v){const f=CF[k],g=CFG[k];const i=f.sel.indexOf(v);if(i>=0){f.sel.splice(i,1)}else{if(!g.multi)f.sel=[v];else{if(f.sel.length>=g.max){toast('最多只能选 '+g.max+' 个，可以取消一个再选');return}f.sel.push(v)}}crSync()}
-function crPicSet(src,pre,label){CF.pic={src,pre,label};crSync()}
+function crPicSet(src,pre,label){CF.pic={src,pre,label};$('#curl').value=src;crSync()}
 function crToText(){
   const L=['【我的角色】','姓名：'+(CF.name.trim()||'未命名'),'性别：'+(val('gender')||'未指定'),'时间线：'+(val('tl')||'未指定'),'武器：'+(val('wp')||'未指定'),'初始技能：'+(val('sk')||'未指定'),'天赋：'+(val('ta')||'未指定'),'操作水平：'+(val('lv')||'未指定')];
-  if(CF.pic)L.push('立绘：'+(CF.pic.pre>=0?CR_PIC[CF.pic.pre][2]+'（预设）':CF.pic.label==='url'?CF.pic.src:'本地上传图片（仅在本机显示）'));
+  if(CF.pic&&crPortraitUrl(CF.pic.src))L.push('立绘URL：'+CF.pic.src);
   if(CF.note.trim())L.push('备注：'+CF.note.trim());
   return L.join('\n')}
 function crShowResult(){
@@ -1196,14 +1195,18 @@ function crShowResult(){
   <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 返回修改</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
   <div style="margin-top:14px;font-size:12px;color:#8fb2c6;line-height:1.7">把「复制角色设定」粘贴到聊天里发给角色卡，就能带着这个身份进入故事。角色已保存在这台设备的浏览器里，下次打开会自动恢复。</div>`;
   cre.classList.add('done')}
-function crSave(){try{parent!==window&&parent.postMessage({type:'sao-character',name:CF.name,text:crToText()},'*')}catch(e){}LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic&&CF.pic.label==='local'&&CF.pic.src.length>1500000?null:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
-function crLoad(){const s=LS.get('sao_char',null);if(!s)return;CF.note=s.note||'';CF.pic=s.pic||null;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
-function crFile(file){
-  if(!file||!/^image\//.test(file.type)){toast('请选择图片文件');return}
-  const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*m);c.height=Math.round(im.height*m);c.getContext('2d').drawImage(im,0,0,c.width,c.height);crPicSet(c.toDataURL('image/jpeg',.88),-1,'local');toast('已载入本地立绘')};im.onerror=()=>toast('这张图片无法读取');im.src=fr.result};fr.readAsDataURL(file)}
-function crUrl(){
-  const u=$('#curl').value.trim();if(!/^https?:\/\//i.test(u)){toast('请输入以 http:// 或 https:// 开头的图片外链');return}
-  const im=new Image();im.referrerPolicy='no-referrer';im.onload=()=>{crPicSet(u,-1,'url');toast('外链立绘已载入')};im.onerror=()=>toast('这个外链加载失败（可能不是图片，或对方不允许外部引用）');im.src=u}
+function crSave(){try{parent!==window&&parent.postMessage({type:'sao-character',name:CF.name,text:crToText()},'*')}catch(e){}LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
+function crLoad(){const s=LS.get('sao_char',null);if(!s)return;crUrlRequest++;CF.note=s.note||'';const u=crPortraitUrl(s.pic&&s.pic.src);CF.pic=u?{src:u,pre:-1,label:'url'}:null;$('#curl').value=u;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
+function crPortraitUrl(value){
+  try{const u=new URL(String(value||'').trim());return u.protocol==='https:'&&!u.username&&!u.password?u.href:''}catch(e){return ''}}
+let crUrlRequest=0;
+function crUrl(onReady){
+  const request=++crUrlRequest,u=crPortraitUrl($('#curl').value);
+  if(!u){toast('请输入可公开访问的 HTTPS 图片外链');return}
+  const current=()=>request===crUrlRequest&&crPortraitUrl($('#curl').value)===u;
+  const im=new Image();im.referrerPolicy='no-referrer';
+  im.onload=()=>{if(!current())return;crPicSet(u,-1,'url');toast('外链立绘已载入');if(typeof onReady==='function')onReady()};
+  im.onerror=()=>{if(current())toast('这个外链加载失败，请确认链接直接指向图片且允许外部引用')};im.src=u}
 function openCreator(){
   if(MOD)return;MOD='creator';if(!openCreator.loaded){openCreator.loaded=1;crLoad()}
   cre.classList.remove('done');cre.style.display='flex';void cre.offsetWidth;cre.classList.add('on');crSync();tick(1100,.1,.06);flash()}
@@ -1212,19 +1215,16 @@ cre.addEventListener('click',e=>{
   e.stopPropagation();
   const ch=e.target.closest('.chip');
   if(ch){const k=ch.dataset.k;if(ch.dataset.c){const f=CF[k];f.on=!f.on;if(f.on&&!CFG[k].multi)f.sel=[];crSync();if(f.on)$(`#cre .cin[data-k=${k}]`).focus()}else{if(CF[ch.dataset.k].on&&!CFG[ch.dataset.k].multi)CF[ch.dataset.k].on=false;crPick(k,ch.dataset.v)}return}
-  const pc=e.target.closest('.pic');if(pc){const i=+pc.dataset.p;crPicSet(CR_PIC[i][0],i,'preset');return}
   const b=e.target.closest('[data-c]');if(!b)return;const v=b.dataset.c;
   if(v==='x')closeCreator();
-  else if(v==='upload')$('#cfile').click();
   else if(v==='useurl')crUrl();
   else if(v==='reset')crReset();
-  else if(v==='make'){if(!CF.name.trim())CF.name=(($('#nick')||{}).value||'Kirito').trim()||'Kirito';crSave();crShowResult();tick(1500,.1,.06);flash()}
+  else if(v==='make'){const finish=()=>{if(!CF.name.trim())CF.name=(($('#nick')||{}).value||'Kirito').trim()||'Kirito';crSave();crShowResult();tick(1500,.1,.06);flash()};const u=$('#curl').value.trim();if(u&&(!CF.pic||CF.pic.src!==u)){crUrl(finish);return}if(!u){CF.pic=null;crSync()}finish()}
   else if(v==='edit'){cre.classList.remove('done')}
   else if(v==='copy'){const t=crToText();(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制，去聊天里粘贴吧'),()=>{const ta=mk('textarea','',null,document.body);ta.value=t;ta.style.cssText='position:fixed;left:-999px';ta.select();try{document.execCommand('copy');toast('已复制，去聊天里粘贴吧')}catch(_){toast('复制失败，请手动选择文字')}ta.remove()})}
   else if(v==='txt'){const a=mk('a','',null,document.body);a.href=URL.createObjectURL(new Blob([crToText()],{type:'text/plain;charset=utf-8'}));a.download=(CF.name.trim()||'角色')+'_设定.txt';a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 });
-cre.addEventListener('input',e=>{const t=e.target;if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
-$('#cfile').addEventListener('change',e=>{crFile(e.target.files[0]);e.target.value=''});
+cre.addEventListener('input',e=>{const t=e.target;if(t.id==='curl')crUrlRequest++;else if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
 $('#curl').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();crUrl()}});
 crLoad();openCreator.loaded=1;{const s=LS.get('sao_char',null),nk=$('#nick');if(s&&s.name){CF.name=s.name;if(nk)nk.value=s.name}else if(nk)CF.name=nk.value.trim()}crSync();
 // the old "Items" menu entry becomes "创造角色"
