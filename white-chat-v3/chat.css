@@ -107,10 +107,10 @@ article:has(> header > small) summary:hover {background:#eaf1f3;}
 
 /* v2 水晶绘境：原生语义HTML + details，不依赖消息脚本。 */
 article:has(> header > small) {
- position:relative;grid-template-columns:88px minmax(0,1fr);background:linear-gradient(110deg,#ffffffb0,#f9ffffa0 55%,#fff6df80),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/background.png") center top/cover no-repeat!important;
+ position:relative;grid-template-columns:88px minmax(0,1fr);background:linear-gradient(110deg,#ffffffb0,#f9ffffa0 55%,#fff6df80),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/background.webp") center top/cover no-repeat!important;
  border:1px solid #c0d6df!important;border-top:2px solid #aacad6!important;border-radius:12px!important;overflow:clip;box-shadow:0 15px 60px #2f63751a,0 0 0 4px #ffffff55,inset 0 0 30px #fff9e740;
 }
-article:has(> header > small) > header {background:linear-gradient(90deg,#f6fbffe8,#ffffffe0 40%,#edf7fa70),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/background.png") 100% 18%/cover no-repeat;padding:24px 28px!important;}
+article:has(> header > small) > header {background:linear-gradient(90deg,#f6fbffe8,#ffffffe0 40%,#edf7fa70),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/background.webp") 100% 18%/cover no-repeat;padding:24px 28px!important;}
 article:has(> header > small) > header > h2 {font-size:24px!important;color:#315669!important;text-shadow:0 1px 0 #fff;}
 article:has(> header > small) > header > small {color:#728b99;letter-spacing:.25em;}
 article:has(> header > small) > aside {position:static;padding:18px 8px!important;background:linear-gradient(#ebf7ffbf,#fffaf0b0);border-right:1px solid #bed2db;}
@@ -158,9 +158,9 @@ article:has(> header > small) > section > nav > figure > figcaption {font:10px/1
 article:has(> header > small) blockquote > p {background:linear-gradient(120deg,#f5fbfff2,#ffffffc9)!important;border-color:#bfd5e0!important;box-shadow:0 4px 13px #658b9d0a;}
 article:has(> header > small) blockquote:nth-of-type(even) > p {background:linear-gradient(120deg,#fff9eaf0,#fffef8d9)!important;border-color:#ded2b5!important;}
 article:has(> header > small) blockquote > picture > img[src*="npc-"] {width:48px!important;height:56px!important;left:0;top:0;object-fit:cover;}
-.custom-styles:has(article > header > small) {background:linear-gradient(#eaf6fb30,#f4f8fc40),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/background.png") center/cover fixed no-repeat!important;}
+.custom-styles:has(article > header > small) {background:linear-gradient(#eaf6fb30,#f4f8fc40),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/background.webp") center/cover fixed no-repeat!important;}
 .custom-styles:has(article > header > small) #prompt-input {background:linear-gradient(transparent,#eaf4f9df 45%)!important;padding-top:16px;color:#36596d;}
-.custom-styles:has(article > header > small) #prompt-input .pbar,.custom-styles:has(article > header > small) #prompt-input [data-slot="input-group"] {background:linear-gradient(110deg,#f8fdfff2,#fff9e9e8),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/background.png") center/cover!important;border:1px solid #a8c9d9!important;border-radius:16px!important;box-shadow:0 5px 24px #4b758d20,inset 0 1px 0 #fff!important;transition:border-color .2s,box-shadow .2s;}
+.custom-styles:has(article > header > small) #prompt-input .pbar,.custom-styles:has(article > header > small) #prompt-input [data-slot="input-group"] {background:linear-gradient(110deg,#f8fdfff2,#fff9e9e8),url("https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/background.webp") center/cover!important;border:1px solid #a8c9d9!important;border-radius:16px!important;box-shadow:0 5px 24px #4b758d20,inset 0 1px 0 #fff!important;transition:border-color .2s,box-shadow .2s;}
 .custom-styles:has(article > header > small) #prompt-input .pbar:focus-within,.custom-styles:has(article > header > small) #prompt-input [data-slot="input-group"]:focus-within {border-color:#6695b0!important;box-shadow:0 0 0 3px #b8d7e54d,0 5px 24px #4b758d20!important;}
 .custom-styles:has(article > header > small) #prompt-input textarea,.custom-styles:has(article > header > small) #prompt-input [contenteditable="true"] {background:transparent!important;color:#355a70!important;caret-color:#a88b4a;font:14px/1.9 "Microsoft YaHei",sans-serif;}
 .custom-styles:has(article > header > small) #prompt-input textarea::placeholder {color:#829da9;}

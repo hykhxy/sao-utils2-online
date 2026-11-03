@@ -217,27 +217,27 @@
   },
   {
     "name": "聊天背景",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/background.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/background.webp"
   },
   {
     "name": "状态入口",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/icon-status.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-status.webp"
   },
   {
     "name": "同伴入口",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/icon-companions.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-companions.webp"
   },
   {
     "name": "装备入口",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/icon-equipment.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-equipment.webp"
   },
   {
     "name": "事件入口",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/icon-events.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-events.webp"
   },
   {
     "name": "记忆入口",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/icon-memory.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-memory.webp"
   },
   {
     "name": "普通男性NPC",
@@ -253,10 +253,10 @@
   },
   {
     "name": "孩童NPC",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v2/assets/npc-child.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/npc-child.webp"
   },
   {
     "name": "论坛入口",
-    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-forum.png"
+    "url": "https://hykhxy.github.io/sao-utils2-online/white-chat-v3/assets/icon-forum.webp"
   }
 ]
