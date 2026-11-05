@@ -384,6 +384,32 @@ html.sm #cre .cfoot .tip{display:none}
 html.sm #toast{bottom:64px}
 
 
+
+/* SAO CREATOR v1.3: saved settings, immutable initial allocation, aligned login. */
+#sao-login-panel{grid-template-columns:64px minmax(0,1fr);grid-template-rows:46px 42px;gap:18px 16px;align-content:center;align-items:center;padding:24px;transform:scale(var(--sao-login-zoom,1));transform-origin:50% 50%;font-family:"Microsoft YaHei",sans-serif;box-shadow:0 8px 35px #102e4c4d}
+#sao-login-panel>.login-label{position:static!important;display:flex;align-items:center;justify-content:flex-end;height:46px;font-size:18px;line-height:1.4;color:#3b5364;white-space:nowrap}
+#sao-login-panel>.login-field{position:static!important;height:46px;min-width:0;box-sizing:border-box;border:2px solid #5c819c;border-radius:4px;background:#fff;display:flex;align-items:center;overflow:hidden}
+#sao-login-panel #nick{width:100%;height:100%;min-width:0;box-sizing:border-box;margin:0;padding:0 10px;border:0;outline:0;background:transparent;font:18px/1.4 "Microsoft YaHei",sans-serif;color:#223848;text-align:left;letter-spacing:0}
+#sao-login-panel>.login-submit{position:static!important;grid-column:1/-1;display:flex;align-items:center;justify-content:center;width:100%;height:42px;box-sizing:border-box;margin:0;padding:0 16px;border:1px solid #7e9fb7;border-radius:4px;background:linear-gradient(#fff,#dfeaf0);font:16px/1.4 "Microsoft YaHei",sans-serif;color:#294b62;cursor:pointer}
+#sao-login-panel #nick:focus-visible{box-shadow:inset 0 0 0 2px #4a95e0}
+#cre .urow{flex-wrap:wrap;align-items:stretch}
+#cre .urow input[type=url]{flex:1 1 260px;min-width:0;height:38px;box-sizing:border-box;padding:0 10px;border:1px solid #8bb9d0;border-radius:5px;background:#0c2037;color:#fff;font:13px/1.5 "Microsoft YaHei",sans-serif}
+#cre .urow button{min-height:38px}
+#cre .attr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#cre .attr-item{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;padding:10px;border:1px solid #5e91b6;border-radius:5px;background:#0a1e328c;box-sizing:border-box}
+#cre .attr-item span{font:13px/1.5 "Microsoft YaHei",sans-serif;white-space:nowrap}
+#cre .attr-item small{display:block;color:#8fb2c6;font:10px/1.4 Bahnschrift,Arial,sans-serif;letter-spacing:1px}
+#cre .attr-item input{width:58px;min-width:0;height:36px;box-sizing:border-box;border:1px solid #8bb9d0;border-radius:4px;background:#071726;color:#fff;padding:0 5px;font:16px/1.4 Bahnschrift,"Microsoft YaHei",sans-serif;text-align:center}
+#cre .attr-item input:disabled{color:#ffe7aa;background:#243746;opacity:1;border-color:#ae9864;cursor:default}
+#cre [data-c=saveattrs]{margin-top:12px;min-height:38px}
+#cre [data-c=saveattrs]:disabled{opacity:1;cursor:default;color:#f5dfa1;border-color:#ae9864;background:#263a49}
+#cre .saved-settings{margin-top:16px;padding:10px 12px;border:1px solid #5585a6;border-radius:5px;background:#071a2ac9;color:#dcebf4}
+#cre .saved-settings summary{font:13px/1.6 "Microsoft YaHei",sans-serif;cursor:pointer;color:#9fe4f3}
+#cre .saved-settings pre{margin:12px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:0}
+#cre .cres td{overflow-wrap:anywhere}
+#cre .csec h4{flex-wrap:wrap;row-gap:3px}
+@media(max-width:760px){#cre .attr-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#cre .cform{padding-left:16px;padding-right:16px}#cre .attr-item{gap:6px;padding:8px}#cre .cfoot{padding:10px 16px;gap:8px}#cre .urow input[type=url]{flex-basis:100%}}
+
 </style>
 </head>
 <body>
@@ -419,7 +445,7 @@ let ROT=false,ROTW=false;
 const VW=()=>ROT?innerHeight:innerWidth,VH=()=>ROT?innerWidth:innerHeight;
 const PT=e=>ROT?[e.clientY,innerWidth-e.clientX]:[e.clientX,e.clientY];
 function applyRot(){ROT=ROTW&&innerHeight>innerWidth;const c=document.documentElement.classList;c.toggle('rot',ROT);c.toggle('mob',MOB);c.toggle('sm',Math.min(VW(),VH())<560);const st=document.documentElement.style;st.setProperty('--vw',VW()/100+'px');st.setProperty('--vh',VH()/100+'px');st.setProperty('--RW',innerWidth+'px');st.setProperty('--RH',innerHeight+'px')}
-let SC=1,OX=0,OY=0;function fit(){applyRot();const W=VW(),H=VH();SC=Math.min(W/1152,H/720);OX=(W-1152*SC)/2;OY=(H-720*SC)/2;wrap.style.transform=`translate(${OX}px,${OY}px) scale(${SC})`;if(window.__hdReady)hdFit()}
+let SC=1,OX=0,OY=0;function fit(){applyRot();const W=VW(),H=VH();SC=Math.min(W/1152,H/720);document.documentElement.style.setProperty('--sao-login-zoom',String(Math.max(1,Math.min(2.6,280/(380*SC)))));OX=(W-1152*SC)/2;OY=(H-720*SC)/2;wrap.style.transform=`translate(${OX}px,${OY}px) scale(${SC})`;if(window.__hdReady)hdFit()}
 addEventListener('resize',fit);fit();
 
 /* ---------- build HUD (desktop) ---------- */
@@ -472,10 +498,8 @@ parts.dlg=el(hud,'left:463px;top:287px;width:226px;height:147px;background:rgba(
  <div class="abs" style="left:0;top:62px;width:100%;text-align:center;font-size:11px;color:#444">SAO Utils 启动成功.</div>
  <div class="abs" style="left:46px;top:100px;width:136px;height:16px;border:1px solid #ccc;background:rgba(255,255,255,.35);text-align:center;font-size:10px;color:#ccc;line-height:16px">登录</div></div>
  `);
-parts.login=el(hud,'left:469px;top:330px;width:215px;height:97px;background:#f2f2f2;border:3px solid #4a95e0;box-sizing:border-box;opacity:0',
-`<div class="abs" style="left:46px;top:30px;font-size:11px;color:#555">昵称:</div>
- <div class="abs" style="left:82px;top:28px;width:104px;height:15px;border:2px solid #222;background:#fff;box-sizing:border-box;border-radius:2px"></div>
- <div class="abs" style="left:36px;top:52px;width:135px;height:17px;border:1px solid #999;background:linear-gradient(#f6f6f6,#e3e3e3);text-align:center;font-size:10.5px;line-height:17px;color:#333">登录</div>`);
+parts.login=el(hud,'left:386px;top:270px;width:380px;height:180px;background:#f2f6f8;border:3px solid #4a95e0;box-sizing:border-box;opacity:0',
+`<label class="login-label" for="nick">昵称</label><div class="login-field"></div><button class="login-submit" type="button">登录</button>`);parts.login.id='sao-login-panel';
 parts.leafa=el(hud,'left:926px;top:64px;width:200px;height:48px',
 `<div class="plate abs" style="left:10px;top:2px;width:186px;height:22px;background:linear-gradient(#97aab8,#6d8090);opacity:.95"></div>
  <div class="abs num" style="left:38px;top:4px;font-size:10px;font-weight:700;color:#fff">Leafa</div>
@@ -763,7 +787,7 @@ document.addEventListener('fullscreenchange',()=>{fsb.textContent=inFS()?'⤢':'
 parts.logo.classList.add('ck');parts.logo.dataset.act='menu';parts.logo.title='SAO 菜单';
 [...parts.hexes.querySelectorAll('.hexw')].forEach((h,i)=>{h.classList.add('ck');h.dataset.act=(i===1?'menu':i===0?'gallery':'hex');if(i===0)h.dataset.tip='角色图鉴';if(i===1)h.dataset.tip='SAO 菜单'});
 {const b=parts.dlg.querySelector('#d1').lastElementChild;b.classList.add('ck');b.dataset.act='login1';b.style.cssText+=';color:#444;background:rgba(255,255,255,.75);border:1px solid #999;font-size:11px;font-weight:700';b.textContent='登录'}
-{const nb=parts.login.children[1];nb.style.pointerEvents='auto';nb.innerHTML='<input id="nick" value="Kirito" maxlength="12" spellcheck="false" autocomplete="off" style="width:100%;height:100%;border:0;outline:0;background:transparent;font:11px Microsoft YaHei,sans-serif;color:#222;padding:0 4px;box-sizing:border-box">';
+{const nb=parts.login.children[1];nb.style.pointerEvents='auto';nb.innerHTML='<input id="nick" aria-label="登录昵称" value="Kirito" maxlength="12" spellcheck="false" autocomplete="off">';
  const lb=parts.login.children[2];lb.classList.add('ck');lb.dataset.act='login2'}
 [...parts.list.children,...rlist.children].forEach(r=>{r.classList.add('ck');r.dataset.act='tick'});
 sb.forEach((s,i)=>{s.classList.add('ck');s.dataset.act=(i===0?'sideA':i===1?'sideC':i===2?'gallery':'tick')});
@@ -1145,7 +1169,7 @@ const CR_TA=[['反应神经','极快的反射'],['剑感','天生的距离感'],
 const CR_LV=[['新手','刚拿起武器'],['普通玩家','会基本剑技'],['熟练玩家','稳定的中层水平'],['老练高手','经验丰富'],['攻略组水准','前线战力'],['顶尖高手','同辈中的佼佼者'],['传说级','需要剧情积累']];
 const CR_GD=[['男','♂'],['女','♀'],['其他','自行填写'],['不指定','交给故事']];
 const CR_GALLERY=[{"id":"adult-man","label":"帅气成年男性","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-man.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-man.png"},{"id":"young-man","label":"帅气青年","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-man.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-man.png"},{"id":"adult-woman","label":"美丽成年女性","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-woman.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/adult-woman.png"},{"id":"young-woman","label":"美丽少女","src":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-woman.png","avatar":"https://hykhxy.github.io/sao-utils2-online/player-portraits-20261104/young-woman.png"}];
-const CF={name:'',gender:{sel:[],cus:'',on:false},tl:{sel:[],cus:'',on:false},wp:{sel:[],cus:'',on:false},sk:{sel:[],cus:'',on:false},ta:{sel:[],cus:'',on:false},lv:{sel:[],cus:'',on:false},note:'',pic:null};
+const CF={name:'',gender:{sel:[],cus:'',on:false},tl:{sel:[],cus:'',on:false},wp:{sel:[],cus:'',on:false},sk:{sel:[],cus:'',on:false},ta:{sel:[],cus:'',on:false},lv:{sel:[],cus:'',on:false},note:'',pic:null,attributes:{str:5,agi:5,vit:5,dex:5,int:5,per:5},attributesLocked:false,savedText:''};
 const CFG={gender:{multi:0},tl:{multi:0},wp:{multi:0},sk:{multi:1,max:3},ta:{multi:1,max:2},lv:{multi:0}};
 const val=k=>{const f=CF[k];const a=f.sel.slice();if(f.on&&f.cus.trim())a.push(f.cus.trim());return a.join('、')};
 const cre=mk('div','',null,document.body);cre.id='cre';
@@ -1167,52 +1191,120 @@ ${secHtml('06','天赋','TALENT · 最多选 2 个（原创天赋）','ta',CR_TA
 ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
 <div class="csec"><h4><i>08</i>立绘<small>PORTRAIT · 公共立绘 / 自填外链</small></h4>
 <div class="pics" role="group" aria-label="选择公共立绘">${CR_GALLERY.map(p=>`<button class="pic" type="button" data-portrait-id="${p.id}" aria-label="选择${p.label}" aria-pressed="false"><img src="${p.src}" alt="${p.label}立绘" loading="lazy" referrerpolicy="no-referrer"><span style="color:#d8f0ff;font:11px/1.5 Microsoft YaHei,sans-serif">${p.label}</span></button>`).join('')}</div>
-<div class="urow"><input type="url" id="curl" aria-label="角色立绘外链" placeholder="粘贴公开图片外链 https://…" autocomplete="off" spellcheck="false" inputmode="url"><button class="sbtn sm" data-c="useurl" type="button">预览立绘</button></div>
-<div class="tip">点击上方四张公共立绘即可选择并保存外链，也可自填 HTTPS 图片链接。创建后复制角色设定，立绘URL和头像URL会一并带出；请手动发送到聊天。图片只是外观示意，不自动授予图中装备。</div></div>
+<div class="urow"><input type="url" id="curl" aria-label="角色立绘外链" placeholder="粘贴公开图片外链 https://…" autocomplete="off" spellcheck="false" inputmode="url"><button class="sbtn sm" data-c="useurl" type="button">仅预览立绘</button><button class="sbtn pri" data-c="saveportrait" type="button">保存立绘到设定</button></div><p class="tip" id="portraitstatus" role="status">外链可以先保存，不需要等待图片加载；立绘也可以留空。</p>
+<div class="tip">公共立绘点击即保存，也可填写HTTPS外链后点「保存立绘到设定」。预览仅检查图片，不决定是否能建角；创建和复制始终包含已保存的立绘URL、头像URL及初始属性。图片不自动授予图中装备。</div></div>
 
-<div class="csec"><h4><i>09</i>备注 / 背景故事<small>NOTE · 可选</small></h4><textarea id="cnote" maxlength="400" placeholder="外貌、性格、为什么来到这个世界……（可留空）"></textarea></div>
+<div class="csec" id="s_attributes"><h4><i>09</i>初始属性加点<small>与正文状态栏同名 · 每项最多10点</small></h4>
+<div class="attr-grid">${[['str','力量','STR'],['agi','敏捷','AGI'],['vit','耐力','VIT'],['dex','灵巧','DEX'],['int','智力','INT'],['per','感知','PER']].map(([key,label,abbr])=>`<label class="attr-item"><span>${label}<small>${abbr}</small></span><input data-attr="${key}" type="number" min="0" max="10" step="1" value="5" inputmode="numeric" aria-label="${label}加点"></label>`).join('')}</div>
+<button class="sbtn pri" type="button" data-c="saveattrs">保存属性到设定 · 保存后锁定</button><p class="tip" id="attrstatus" role="status"></p></div>
+<details class="saved-settings"><summary>开端页已保存的角色设定</summary><pre id="cstoredtext">尚未保存角色设定</pre></details>
+<div class="csec"><h4><i>10</i>备注 / 背景故事<small>NOTE · 可选</small></h4><textarea id="cnote" maxlength="400" placeholder="外貌、性格、为什么来到这个世界……（可留空）"></textarea></div>
 </div>
 <div class="cprev"><div class="pimg" id="pimg">尚未选择立绘</div><div class="pname" id="pname">—</div>
-<div class="pbars"><div>HP 750 / 750 　LV 1</div><div class="b"><i></i></div><div id="ptags" style="margin-top:8px;line-height:1.7;color:#9fd3f2;font-family:'Microsoft YaHei';font-size:12px;text-align:center"></div></div></div>
+<div class="pbars"><div>HP / LV · 待正文确认</div><div class="b"><i></i></div><div id="ptags" style="margin-top:8px;line-height:1.7;color:#9fd3f2;font-family:'Microsoft YaHei';font-size:12px;text-align:center"></div></div></div>
 <div class="cres" id="cres"></div></div>
 <div class="cfoot"><div class="tip">姓名取自登录时填写的名字；其余都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。立绘使用公开 HTTPS 图片外链，复制角色设定时会一并带上链接。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
+const CR_ATTRS=[['str','力量','STR'],['agi','敏捷','AGI'],['vit','耐力','VIT'],['dex','灵巧','DEX'],['int','智力','INT'],['per','感知','PER']];
+let crPreviewSrc='';
+function crAttrValue(value){const n=Number(value);return Number.isFinite(n)?Math.max(0,Math.min(10,Math.trunc(n))):0}
+function crSyncAttrs(){
+  $$('#cre [data-attr]').forEach(input=>{input.value=CF.attributes[input.dataset.attr];input.disabled=CF.attributesLocked});
+  const button=$('#cre [data-c="saveattrs"]');if(button){button.disabled=CF.attributesLocked;button.textContent=CF.attributesLocked?'属性已保存并锁定':'保存属性到设定 · 保存后锁定'}
+  const status=$('#attrstatus');if(status)status.textContent=CF.attributesLocked?'已保存到角色设定。初始加点已锁定，返回修改、重置或刷新都保留。':'每项为0–10的整数，不设置额外总点数限制。保存属性或创建角色后锁定初始加点。';
+}
+function crChangeAttr(key,value){if(!CR_ATTRS.some(a=>a[0]===key))return;if(!CF.attributesLocked)CF.attributes[key]=crAttrValue(value);crSyncAttrs()}
+function crSavedText(){const saved=LS.get('sao_char',null);return saved&&typeof saved.settingsText==='string'?saved.settingsText:(CF.savedText||'尚未保存角色设定')}
+function crSaveAttrs(){
+  if(CF.attributesLocked){crSyncAttrs();return true}
+  $$('#cre [data-attr]').forEach(input=>{CF.attributes[input.dataset.attr]=crAttrValue(input.value)});
+  CF.attributesLocked=true;
+  if(!crSave()){CF.attributesLocked=false;crSyncAttrs();return false}
+  crSync();toast('六项初始属性已保存到角色设定，并已锁定');return true;
+}
+function crSavePortrait(){
+  const raw=$('#curl').value.trim(),u=crPortraitUrl(raw),old=CF.pic;
+  if(raw&&!u){toast('请输入有效的公开HTTPS图片外链');return false}
+  crUrlRequest++;crPreviewSrc='';if(u)crPicSet(u,-1,'url');else CF.pic=null;
+  if(!crSave()){CF.pic=old;crSync();return false}
+  crSync();$('#portraitstatus').textContent=u?'已保存到角色设定；图片预览不影响保存和创建角色。':'已保存：暂不设置立绘，也可以创建角色。';
+  toast(u?'立绘外链已保存到角色设定':'已保存为无立绘角色');return true;
+}
+function crMake(){
+  const raw=$('#curl').value.trim(),u=crPortraitUrl(raw),oldPic=CF.pic,oldLock=CF.attributesLocked;
+  if(u){crPicSet(u,-1,'url')}else if(!raw){CF.pic=null;crPreviewSrc=''}else toast('外链格式未通过，沿用已保存立绘；建角不等待图片');
+  if(!CF.name.trim())CF.name=(($('#nick')||{}).value||'Kirito').trim()||'Kirito';
+  if(!CF.attributesLocked){$$('#cre [data-attr]').forEach(input=>{CF.attributes[input.dataset.attr]=crAttrValue(input.value)});CF.attributesLocked=true}
+  if(!crSave()){CF.pic=oldPic;CF.attributesLocked=oldLock;crSync();return false}
+  crSync();crShowResult();tick(1500,.1,.06);flash();return true;
+}
+
 function crSync(){
   $$('#cre [data-portrait-id]').forEach(p=>{const on=!!CF.pic&&CR_GALLERY.some(g=>g.id===p.dataset.portraitId&&g.src===CF.pic.src);p.classList.toggle('on',on);p.setAttribute('aria-pressed',String(on))});
   $$('#cre .chip').forEach(c=>{const k=c.dataset.k,f=CF[k];if(c.dataset.c)c.classList.toggle('on',f.on);else c.classList.toggle('on',f.sel.includes(c.dataset.v))});
   $$('#cre .cin').forEach(i=>i.classList.toggle('on',CF[i.dataset.k].on));
   $('#pname').textContent=CF.name.trim()||'—';$('#cnamev').textContent=CF.name.trim()||'（登录后自动填入）';
-  const pi=$('#pimg');if(CF.pic){if(pi.dataset.s!==CF.pic.src){pi.dataset.s=CF.pic.src;pi.innerHTML='<img alt="">';pi.firstChild.referrerPolicy='no-referrer';pi.firstChild.src=CF.pic.src}}else{pi.dataset.s='';pi.textContent='尚未选择立绘'}
-  $('#ptags').innerHTML=[val('tl'),val('wp'),val('sk'),val('lv')].filter(Boolean).map(esc).join('<br>');
+  const pi=$('#pimg'),preview=crPreviewSrc||(CF.pic&&CF.pic.src);if(preview){if(pi.dataset.s!==preview){pi.dataset.s=preview;pi.innerHTML='<img alt="角色立绘预览">';pi.firstChild.referrerPolicy='no-referrer';pi.firstChild.src=preview}}else{pi.dataset.s='';pi.textContent='暂未设置立绘 · 仍可创建角色'}
+  $('#ptags').innerHTML=[val('tl'),val('wp'),val('sk'),val('lv')].filter(Boolean).map(esc).join('<br>');crSyncAttrs();const savedBox=$('#cstoredtext');if(savedBox)savedBox.textContent=crSavedText();
 }
-function crReset(){crUrlRequest++;CF.note='';CF.pic=null;for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}$('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync()}
+function crReset(){
+  crUrlRequest++;crPreviewSrc='';CF.note='';CF.pic=null;
+  for(const k of Object.keys(CFG)){CF[k].sel=[];CF[k].cus='';CF[k].on=false}
+  if(!CF.attributesLocked)for(const [key] of CR_ATTRS)CF.attributes[key]=5;
+  $('#cnote').value='';$$('#cre .cin').forEach(i=>i.value='');$('#curl').value='';cre.classList.remove('done');crSync();
+  if(CF.attributesLocked)toast('其他选项已重置；已保存的初始属性保持锁定');
+}
 function crPick(k,v){const f=CF[k],g=CFG[k];const i=f.sel.indexOf(v);if(i>=0){f.sel.splice(i,1)}else{if(!g.multi)f.sel=[v];else{if(f.sel.length>=g.max){toast('最多只能选 '+g.max+' 个，可以取消一个再选');return}f.sel.push(v)}}crSync()}
-function crPicSet(src,pre,label){const p=crPortraitChoice(src);CF.pic={src,pre:-1,label:'url',avatar:p?p.avatar:src,choice:p?p.id:'custom-url',name:p?p.label:'自定义外链'};$('#curl').value=src;crSync();crStore()}
+function crPicSet(src,pre,label){const p=crPortraitChoice(src);CF.pic={src,pre:-1,label:'url',avatar:p?p.avatar:src,choice:p?p.id:'custom-url',name:p?p.label:'自定义外链'};$('#curl').value=src;crPreviewSrc='';crSync()}
 function crPortraitChoice(src){return CR_GALLERY.find(p=>p.src===src)||null}
-function crChoosePortrait(id){const p=CR_GALLERY.find(p=>p.id===id);if(!p)return;$('#curl').value=p.src;crUrl()}
+function crChoosePortrait(id){const p=CR_GALLERY.find(p=>p.id===id);if(!p)return;$('#curl').value=p.src;crSavePortrait()}
 function crToText(){
   const L=['【我的角色】','姓名：'+(CF.name.trim()||'未命名'),'性别：'+(val('gender')||'未指定'),'时间线：'+(val('tl')||'未指定'),'武器：'+(val('wp')||'未指定'),'初始技能：'+(val('sk')||'未指定'),'天赋：'+(val('ta')||'未指定'),'操作水平：'+(val('lv')||'未指定')];
-  if(CF.pic&&crPortraitUrl(CF.pic.src)){const p=crPortraitChoice(CF.pic.src);L.push('立绘ID：'+(p?p.id:'custom-url'),'立绘名称：'+(p?p.label:'自定义外链'),'立绘URL：'+CF.pic.src,'头像URL：'+(crPortraitUrl(CF.pic.avatar)||CF.pic.src))}
-  if(CF.note.trim())L.push('备注：'+CF.note.trim());
-  return L.join('\n')}
+  if(CF.pic&&crPortraitUrl(CF.pic.src)){const p=crPortraitChoice(CF.pic.src);L.push('立绘ID：'+(p?p.id:'custom-url'),'立绘名称：'+(p?p.label:'自定义外链'),'立绘URL：'+CF.pic.src,'头像URL：'+(crPortraitUrl(CF.pic.avatar)||CF.pic.src))}else L.push('立绘：暂未设置（不影响创建角色）');
+  L.push(CF.attributesLocked?'【初始属性加点·已保存锁定】':'【初始属性加点·草稿未锁定】');
+  for(const [key,label] of CR_ATTRS)L.push(label+'：'+CF.attributes[key]);
+  L.push('加点规则：每项0–10整数；已保存的初始加点不重置、不改配。后续升级、装备与状态变化另列来源，不改写初始加点。');
+  L.push('正文状态栏：等级、经验、生命HP及上限与恢复、法力MP及上限与恢复、体力、负重、物理攻击、物理防御、魔法攻击、魔法防御、命中、闪避、暴击、抗性、移动速度和异常状态均按当前篇章与已确认信息结算；未确认的不填假数字，艾恩葛朗特的MP及魔法相关项标不适用。');
+  if(CF.note.trim())L.push('备注：'+CF.note.trim());return L.join('\n');
+}
 function crShowResult(){
-  const rows=[['姓名',CF.name.trim()||'未命名'],['性别',val('gender')],['时间线',val('tl')],['武器',val('wp')],['初始技能',val('sk')],['天赋',val('ta')],['操作水平',val('lv')]];if(CF.note.trim())rows.push(['备注',CF.note.trim()]);
+  const rows=[['姓名',CF.name.trim()||'未命名'],['性别',val('gender')],['时间线',val('tl')],['武器',val('wp')],['初始技能',val('sk')],['天赋',val('ta')],['操作水平',val('lv')]];
+  if(CF.pic)rows.push(['立绘URL',CF.pic.src]);for(const [key,label] of CR_ATTRS)rows.push([label+'（已锁定）',String(CF.attributes[key])]);if(CF.note.trim())rows.push(['备注',CF.note.trim()]);
   $('#cres').innerHTML=`<h3>角色创建完成</h3><div style="font:11px Bahnschrift,Arial;letter-spacing:5px;color:#7fe3f2">CHARACTER REGISTERED</div><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${esc(r[1]||'未指定')}</td></tr>`).join('')}</table>
-  <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 返回修改</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
-  <div style="margin-top:14px;font-size:12px;color:#8fb2c6;line-height:1.7">把「复制角色设定」粘贴到聊天里发给角色卡，就能带着这个身份进入故事。角色已保存在这台设备的浏览器里，下次打开会自动恢复。</div>`;
-  cre.classList.add('done')}
-function crStore(){LS.set('sao_char',{name:CF.name,note:CF.note,pic:CF.pic,f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))})}
-function crSave(){try{parent!==window&&parent.postMessage({type:'sao-character',name:CF.name,text:crToText()},'*')}catch(e){}crStore()}
-function crLoad(){const s=LS.get('sao_char',null);if(!s)return;crUrlRequest++;CF.note=s.note||'';const u=crPortraitUrl(s.pic&&s.pic.src),p=crPortraitChoice(u);CF.pic=u?{src:u,pre:-1,label:'url',avatar:p?p.avatar:(crPortraitUrl(s.pic.avatar)||u),choice:p?p.id:'custom-url',name:p?p.label:'自定义外链'}:null;$('#curl').value=u;for(const k of Object.keys(CFG))if(s.f&&s.f[k])Object.assign(CF[k],s.f[k]);$('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||''}
+  <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制已保存角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 修改其他资料</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
+  <details class="saved-settings"><summary>查看已保存的角色设定</summary><pre>${esc(crSavedText())}</pre></details>
+  <div class="tip">以上内容已保存到本开端页的角色设定，复制与下载读取同一份保存记录。初始加点已锁定；进入聊天时发送这份设定，正文状态栏按同名六项承接。</div>`;cre.classList.add('done');
+}
+function crStore(){
+  // A second tab opened before the first save must honor the durable lock too.
+  const existing=LS.get('sao_char',null);
+  if(existing&&existing.attributesLocked===true&&existing.attributes){CF.attributes=Object.fromEntries(CR_ATTRS.map(([key])=>[key,crAttrValue(existing.attributes[key])]));CF.attributesLocked=true}
+  const saved={schemaVersion:2,name:CF.name,note:CF.note,pic:CF.pic,attributes:{...CF.attributes},attributesLocked:CF.attributesLocked,settingsText:crToText(),f:Object.fromEntries(Object.keys(CFG).map(k=>[k,CF[k]]))};
+  try{localStorage.setItem('sao_char',JSON.stringify(saved));CF.savedText=saved.settingsText;const box=$('#cstoredtext');if(box)box.textContent=saved.settingsText;return true}
+  catch(e){toast('角色设定保存失败，请检查浏览器存储后重试；本次未锁定属性');return false}
+}
+function crSave(){if(!crStore())return false;try{if(parent!==window)parent.postMessage({type:'sao-character',name:CF.name,text:CF.savedText},'*')}catch(e){console.info('开端页角色设定已保存在当前浏览器')}return true}
+function crLoad(){
+  const saved=LS.get('sao_char',null);if(!saved)return;
+  crUrlRequest++;crPreviewSrc='';CF.note=saved.note||'';
+  const u=crPortraitUrl(saved.pic&&saved.pic.src),p=crPortraitChoice(u);
+  CF.pic=u?{src:u,pre:-1,label:'url',avatar:p?p.avatar:(crPortraitUrl(saved.pic.avatar)||u),choice:p?p.id:'custom-url',name:p?p.label:'自定义外链'}:null;
+  $('#curl').value=u;
+  for(const k of Object.keys(CFG))if(saved.f&&saved.f[k])Object.assign(CF[k],saved.f[k]);
+  for(const [key] of CR_ATTRS)CF.attributes[key]=crAttrValue(saved.attributes&&saved.attributes[key]!==undefined?saved.attributes[key]:5);
+  CF.attributesLocked=saved.attributesLocked===true&&!!saved.attributes;CF.savedText=saved.settingsText||'';
+  $('#cnote').value=CF.note;for(const k of Object.keys(CFG))$(`#cre .cin[data-k=${k}]`).value=CF[k].cus||'';
+}
 function crPortraitUrl(value){
   try{const u=new URL(String(value||'').trim());return u.protocol==='https:'&&!u.username&&!u.password?u.href:''}catch(e){return ''}}
 let crUrlRequest=0;
 function crUrl(onReady){
   const request=++crUrlRequest,u=crPortraitUrl($('#curl').value);
-  if(!u){toast('请输入可公开访问的 HTTPS 图片外链');return}
+  if(!u){toast('请输入可公开访问的HTTPS图片外链');return}
   const current=()=>request===crUrlRequest&&crPortraitUrl($('#curl').value)===u;
-  const im=new Image();im.referrerPolicy='no-referrer';
-  im.onload=()=>{if(!current())return;crPicSet(u,-1,'url');toast('外链立绘已载入');if(typeof onReady==='function')onReady()};
-  im.onerror=()=>{if(current())toast('这个外链加载失败，请确认链接直接指向图片且允许外部引用')};im.src=u}
+  const image=new Image();image.referrerPolicy='no-referrer';
+  image.onload=()=>{if(!current())return;crPreviewSrc=u;crSync();$('#portraitstatus').textContent='预览已载入；点击「保存立绘到设定」写入角色设定。';if(typeof onReady==='function')onReady()};
+  image.onerror=()=>{if(current()){$('#portraitstatus').textContent='预览暂时不可用，仍可保存外链或直接创建角色。';toast('预览暂时不可用，保存外链和建角不受影响')}};image.src=u;
+}
 function openCreator(){
   if(MOD)return;MOD='creator';if(!openCreator.loaded){openCreator.loaded=1;crLoad()}
   cre.classList.remove('done');cre.style.display='flex';void cre.offsetWidth;cre.classList.add('on');crSync();tick(1100,.1,.06);flash()}
@@ -1226,12 +1318,15 @@ cre.addEventListener('click',e=>{
   if(v==='x')closeCreator();
   else if(v==='useurl')crUrl();
   else if(v==='reset')crReset();
-  else if(v==='make'){const finish=()=>{if(!CF.name.trim())CF.name=(($('#nick')||{}).value||'Kirito').trim()||'Kirito';crSave();crShowResult();tick(1500,.1,.06);flash()};const u=$('#curl').value.trim();if(u&&(!CF.pic||CF.pic.src!==u)){crUrl(finish);return}if(!u){CF.pic=null;crSync()}finish()}
+  else if(v==='saveportrait')crSavePortrait();
+  else if(v==='saveattrs')crSaveAttrs();
+  else if(v==='make')crMake();
   else if(v==='edit'){cre.classList.remove('done')}
-  else if(v==='copy'){const t=crToText();(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制，去聊天里粘贴吧'),()=>{const ta=mk('textarea','',null,document.body);ta.value=t;ta.style.cssText='position:fixed;left:-999px';ta.select();try{document.execCommand('copy');toast('已复制，去聊天里粘贴吧')}catch(_){toast('复制失败，请手动选择文字')}ta.remove()})}
-  else if(v==='txt'){const a=mk('a','',null,document.body);a.href=URL.createObjectURL(new Blob([crToText()],{type:'text/plain;charset=utf-8'}));a.download=(CF.name.trim()||'角色')+'_设定.txt';a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+  else if(v==='copy'){const t=crSavedText();(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制，去聊天里粘贴吧'),()=>{const ta=mk('textarea','',null,document.body);ta.value=t;ta.style.cssText='position:fixed;left:-999px';ta.select();try{document.execCommand('copy');toast('已复制，去聊天里粘贴吧')}catch(_){toast('复制失败，请手动选择文字')}ta.remove()})}
+  else if(v==='txt'){const a=mk('a','',null,document.body);a.href=URL.createObjectURL(new Blob([crSavedText()],{type:'text/plain;charset=utf-8'}));a.download=(CF.name.trim()||'角色')+'_设定.txt';a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 });
-cre.addEventListener('input',e=>{const t=e.target;if(t.id==='curl')crUrlRequest++;else if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
+cre.addEventListener('input',e=>{const t=e.target;if(t.matches('[data-attr]')){crChangeAttr(t.dataset.attr,t.value);return}if(t.id==='curl'){crUrlRequest++;crPreviewSrc='';}else if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
+cre.addEventListener('change',e=>{if(e.target.matches('[data-attr]'))crChangeAttr(e.target.dataset.attr,e.target.value)});
 $('#curl').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();crUrl()}});
 crLoad();openCreator.loaded=1;{const s=LS.get('sao_char',null),nk=$('#nick');if(s&&s.name){CF.name=s.name;if(nk)nk.value=s.name}else if(nk)CF.name=nk.value.trim()}crSync();
 // the old "Items" menu entry becomes "创造角色"
@@ -1246,7 +1341,7 @@ act=function(name,elm){
     if(!galleryAllowed()){tick(500,.08);return}
     if(name==='music2'&&MU.i>=0&&MU.pl&&MU.ready){mToggle();tick(1300,.05,.05);return}
     openMusic();if(MU.i<0)mPlay(0);else tick(1200,.06,.05);return}
-  if(name==='login2'&&hudStage===1){const nk=$('#nick');CF.name=((nk&&nk.value)||'Kirito').trim()||'Kirito';crSave();crSync();toast('已登录：「'+CF.name+'」已保存到角色设定')}
+  if(name==='login2'&&hudStage===1){const nk=$('#nick');CF.name=((nk&&nk.value)||'Kirito').trim()||'Kirito';const saved=crSave();crSync();if(saved)toast('已登录：「'+CF.name+'」已保存到角色设定')}
   if(name==='login2'||name==='menu'){if((name==='login2'&&hudStage===1)||(name==='menu'&&scene==='hud'&&hudStage>=3))flash()}
   return _act(name,elm)};
 addEventListener('keydown',e=>{
@@ -1464,7 +1559,7 @@ function frame(){
     parts.dlg.style.display=dlgOn?'block':'none';
     parts.dlg.style.opacity=hudStage===0?eo(seg(vt,7.4,7.9)):1-seg(se,0,.3);
     const lgOn=hudStage===1||(hudStage===2&&se<.5);
-    parts.login.style.display=lgOn?'block':'none';
+    parts.login.style.display=lgOn?'grid':'none';
     parts.login.style.opacity=hudStage===1?eo(seg(se,.12,.5)):1-seg(se,0,.5);
     $('#loadtxt').style.opacity=hudStage<3?1:1-seg(se,0,.3);
     $('#loadtxt').textContent=hudStage===2?'正在获取动画列表...':(hudStage<2?'等待登录...':'已获取 22 项');
