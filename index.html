@@ -1227,11 +1227,11 @@ ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
 <div class="attr-grid">${[['str','力量','STR'],['agi','敏捷','AGI'],['vit','耐力','VIT'],['dex','灵巧','DEX'],['int','智力','INT'],['per','感知','PER']].map(([key,label,abbr])=>`<label class="attr-item"><span>${label}<small>${abbr}</small></span><input data-attr="${key}" type="number" min="0" max="10" step="1" value="5" inputmode="numeric" aria-label="${label}加点"></label>`).join('')}</div>
 <button class="sbtn pri" type="button" data-c="saveattrs">保存属性到设定 · 保存后锁定</button><p class="tip" id="attrstatus" role="status"></p></div>
 <details class="saved-settings"><summary>开端页已保存的角色设定</summary><pre id="cstoredtext">尚未保存角色设定</pre></details>
-<div class="csec" id="cloudsave"><h4>云存档<small>AI日历沙盒兼容 · 不依赖localStorage</small></h4>
-<p class="tip" id="ccloudstatus" role="status">角色保存到云端。重新打开或换设备时，用存档码恢复。</p>
-<div class="urow"><input id="ccloudcode" type="text" readonly aria-label="当前云存档码" placeholder="保存成功后显示存档码"><button type="button" class="sbtn" data-c="copycode">复制存档码</button></div>
-<div class="urow"><input id="crestorecode" type="text" aria-label="恢复云存档码" placeholder="粘贴SAO1-开头存档码"><button type="button" class="sbtn" data-c="restorecloud">恢复云存档</button></div>
-<p class="tip">存档码是访问凭证，请单独保管、勿公开；图片外链是公开资源，分享图片不需要存档码。</p></div>
+<div class="csec" id="cloudsave"><h4>本地存档<small>保存在当前页面 · 不联网 · 不上传</small></h4>
+<p class="tip" id="ccloudstatus" role="status">设定只保存在这台设备／当前页面里，不经过任何服务器。</p>
+<div class="urow"><input id="ccloudcode" type="text" readonly aria-label="当前存档码" placeholder="保存后显示存档码（SAO1- 开头）"><button type="button" class="sbtn" data-c="copycode">复制存档码</button></div>
+<div class="urow"><input id="crestorecode" type="text" aria-label="恢复存档码" placeholder="粘贴 SAO1- 开头存档码"><button type="button" class="sbtn" data-c="restorecloud">恢复存档</button></div>
+<p class="tip">存档码自带全部设定，可贴在任何地方；点「复制角色设定」会直接复制全部文字，粘进聊天框即可。</p></div>
 <div class="csec"><h4><i>10</i>备注 / 背景故事<small>NOTE · 可选</small></h4><textarea id="cnote" maxlength="400" placeholder="外貌、性格、为什么来到这个世界……（可留空）"></textarea></div>
 </div>
 <div class="cprev"><div class="pimg" id="pimg">尚未选择立绘</div><div class="pname" id="pname">—</div>
@@ -1240,13 +1240,40 @@ ${secHtml('07','操作水平','LEVEL · 单选','lv',CR_LV)}
 <div class="cfoot"><div class="tip">姓名取自登录时填写的名字；其余都可以留空；每一项都能点选，也能点「✎ 自己填写」自由输入。立绘使用公开 HTTPS 图片外链，复制角色设定时会一并带上链接。</div><button class="sbtn" data-c="reset" type="button">重置</button><button class="sbtn pri" data-c="make" type="button" style="height:40px;padding:0 26px;font-size:16px">创建角色 ▶</button></div></div>`;
 const CR_ATTRS=[['str','力量','STR'],['agi','敏捷','AGI'],['vit','耐力','VIT'],['dex','灵巧','DEX'],['int','智力','INT'],['per','感知','PER']];
 let crPreviewSrc='';
-const CR_CLOUD_BASE='https://sao-rili-save-20261105.brown-fawn-2850.chatgpt.site';
+const CR_STORE_KEY='sao_profile_v2';
 let crVaultKey='',crCloudBusy=false,crCloudConfirmed=false,crCloudLoadFailed=false;
-const crKeyValid=value=>/^SAO1-[a-f0-9]{64}$/.test(String(value||'').trim());
-function crRememberKey(){if(!crKeyValid(crVaultKey))return;try{window.name='sao-vault:'+crVaultKey}catch(e){}try{localStorage.setItem('sao_cloud_key',crVaultKey)}catch(e){}const box=$('#ccloudcode');if(box)box.value=crCloudConfirmed?crVaultKey:''}
+function crPad4(t){const m=t.length%4;return m?t+'='.repeat(4-m):t}
+function crB64e(text){
+ const bytes=encodeURIComponent(text).replace(/%([0-9A-F]{2})/g,(_,h)=>String.fromCharCode(parseInt(h,16)));
+ return btoa(bytes).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function crB64d(code){
+ const t=crPad4(String(code||'').trim().replace(/-/g,'+').replace(/_/g,'/'));
+ const bin=atob(t);
+ return decodeURIComponent(Array.from(bin,c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''));
+}
+function crCode(profile){return 'SAO1-'+crB64e(JSON.stringify(profile))}
+function crUncode(value){
+ const raw=String(value||'').trim();if(!raw)return null;
+ if(/^SAO1-[a-f0-9]{64}$/.test(raw))return 'LEGACY';
+ const body=raw.replace(/^SAO1-/,'');
+ try{return JSON.parse(crB64d(body))}catch(e){return null}
+}
+function crRememberKey(){if(!crVaultKey)return;const box=$('#ccloudcode');if(box&&crCloudConfirmed)box.value=crVaultKey}
 function crSetBusy(value){crCloudBusy=value;const form=$('#cre .cform');if(form)form.inert=value;crSyncAttrs()}
-function crKey(){if(!crVaultKey){const bytes=crypto.getRandomValues(new Uint8Array(32));crVaultKey='SAO1-'+Array.from(bytes,x=>x.toString(16).padStart(2,'0')).join('')}return crVaultKey}
 function crCloudStatus(text){const node=$('#ccloudstatus');if(node)node.textContent=text}
+function crLocalWrite(profile){
+ CF.savedText=String(profile.settingsText||CF.savedText||'');
+ crVaultKey=crCode(profile);crCloudConfirmed=true;crCloudLoadFailed=false;
+ const box=$('#ccloudcode');if(box)box.value=crVaultKey;
+ try{localStorage.setItem(CR_STORE_KEY,JSON.stringify(profile))}catch(e){}
+ try{window.name='sao-profile:'+encodeURIComponent(JSON.stringify(profile))}catch(e){}
+}
+function crLocalRead(){
+ try{const raw=localStorage.getItem(CR_STORE_KEY);if(raw){const p=JSON.parse(raw);if(p&&p.attributes)return p}}catch(e){}
+ try{const n=String(window.name||'');if(n.indexOf('sao-profile:')===0){const p=JSON.parse(decodeURIComponent(n.slice(12)));if(p&&p.attributes)return p}}catch(e){}
+ return null;
+}
 function crApplyProfile(profile){
  CF.name=String(profile.name||'');CF.note=String(profile.note||'');CF.pic=profile.pic||null;
  for(const key of Object.keys(CFG))if(profile.f&&profile.f[key])Object.assign(CF[key],profile.f[key]);
@@ -1257,51 +1284,80 @@ function crApplyProfile(profile){
  const nick=$('#nick');if(nick&&CF.name)nick.value=CF.name;
  crCloudConfirmed=true;crCloudLoadFailed=false;crRememberKey();crSync();
 }
-async function crApi(method,profile){
- const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
- try{
-  const response=await fetch(CR_CLOUD_BASE+'/api/profile',{method,mode:'cors',credentials:'omit',cache:'no-store',headers:{Authorization:'Bearer '+crKey(),...(profile?{'Content-Type':'application/json'}:{})},body:profile?JSON.stringify({profile}):undefined,signal:controller.signal});
-  const result=await response.json();if(!response.ok||!result.profile)throw new Error(result.error||'HTTP_'+response.status);return result.profile;
- }finally{clearTimeout(timeout)}
-}
-function crSnapshot(){return {schemaVersion:3,name:CF.name,note:CF.note,pic:CF.pic,attributes:{...CF.attributes},attributesLocked:CF.attributesLocked,f:JSON.parse(JSON.stringify(Object.fromEntries(Object.keys(CFG).map(key=>[key,CF[key]]))))}}
-async function crStore(){
+function crSnapshot(){return {schemaVersion:4,name:CF.name,note:CF.note,pic:CF.pic,attributes:{...CF.attributes},attributesLocked:CF.attributesLocked,settingsText:CF.savedText,f:JSON.parse(JSON.stringify(Object.fromEntries(Object.keys(CFG).map(key=>[key,CF[key]]))))}}
+function crStore(){
  if(crCloudBusy){toast('正在保存，请稍候');return false}
- if(crCloudLoadFailed){toast('请先重试恢复云存档，避免覆盖尚未读取的角色');return false}
- crSetBusy(true);crCloudStatus('正在写入云存档…');
- try{const profile=await crApi('PUT',crSnapshot());crApplyProfile(profile);crCloudStatus('云端已保存。保存码是恢复凭证，请单独复制保管；图片外链可以公开分享。');return true}
- catch(e){crCloudStatus(e.message==='INVALID_PROFILE'?'设定格式未通过，请检查外链与字段，不要把存档码放入备注。':'云端尚未确认保存，当前输入保留。请检查网络后重试。');toast('云端保存尚未成功，当前输入已保留，请重试');return false}
- finally{crSetBusy(false)}
+ crSetBusy(true);
+ try{
+  CF.savedText=crToText();
+  crLocalWrite(crSnapshot());
+  crCloudStatus('已保存在这台设备／当前页面里，不经过网络。点「复制角色设定」可一次复制全部设定；换设备或重开时用下面的存档码恢复。');
+  crSync();
+  return true;
+ }catch(e){
+  crCloudStatus('本机存储不可用，请点「📋 复制角色设定」把全部设定复制到聊天框保存。');
+  toast('本机保存未完成，请改用复制');return false;
+ }finally{crSetBusy(false)}
 }
-async function crSave(){if(!await crStore())return false;try{if(parent!==window)parent.postMessage({type:'sao-character',name:CF.name,text:CF.savedText},'*')}catch(e){}return true}
+function crSave(){
+ if(!crStore())return false;
+ try{if(parent!==window)parent.postMessage({type:'sao-character',name:CF.name,text:CF.savedText},'*')}catch(e){}
+ return true;
+}
 function crSavedText(){return CF.savedText||'尚未保存角色设定'}
-async function crLoad(){
- let candidate='';try{candidate=String(window.name||'').replace(/^sao-vault:/,'')}catch(e){}
- if(!crKeyValid(candidate))try{candidate=localStorage.getItem('sao_cloud_key')||''}catch(e){}
- if(!crKeyValid(candidate)){const legacy=LS.get('sao_char',null);if(legacy&&legacy.attributes&&legacy.attributesLocked){CF.attributes={...legacy.attributes};CF.attributesLocked=true}crCloudStatus('AI日历沙盒模式：角色保存到云端，不依赖框内浏览器存储。');return false}
- crVaultKey=candidate.trim();return await crRestore(crVaultKey);
+function crLoad(){
+ const profile=crLocalRead();
+ if(profile){
+  crApplyProfile(profile);
+  if(!CF.savedText)CF.savedText=crToText();
+  crCloudStatus('已读取本机保存的角色设定，不经过网络。');return true;
+ }
+ const legacy=LS.get('sao_char',null);
+ if(legacy&&legacy.attributes&&legacy.attributesLocked){CF.attributes={...legacy.attributes};CF.attributesLocked=true}
+ crCloudStatus('本机还没有保存过设定。填好后点「保存属性到设定」或「创建角色」，设定会留在当前页面；点「复制角色设定」可把全部设定复制到聊天框。');
+ return false;
 }
-async function crRestore(value){
- const key=String(value||$('#crestorecode').value||'').trim();if(!crKeyValid(key)){toast('请粘贴完整的SAO1-开头云存档码');return false}
- if(crCloudBusy)return false;const oldKey=crVaultKey;crVaultKey=key;crSetBusy(true);crCloudStatus('正在恢复云存档…');
- try{crApplyProfile(await crApi('GET'));cre.classList.remove('done');crCloudStatus('云存档已恢复，初始加点沿用原有锁定状态。');toast('云存档已恢复');return true}
- catch(e){crVaultKey=oldKey;crCloudLoadFailed=!!oldKey&&!crCloudConfirmed;crCloudStatus('存档未读取，请核对存档码并重试；没有改写云端记录。');toast('存档尚未读取，请核对存档码和网络');return false}
+function crRestore(){
+ const profile=crUncode($('#crestorecode').value);
+ if(profile==='LEGACY'){toast('旧版云端存档码已失效（云端服务已停用），请用「复制角色设定」的全文重新建角');return false}
+ if(!profile||!profile.attributes){toast('存档码无法解析，请确认是完整的 SAO1- 开头内容');return false}
+ crSetBusy(true);
+ try{
+  crApplyProfile(profile);
+  if(!CF.savedText)CF.savedText=crToText();
+  crLocalWrite(crSnapshot());
+  cre.classList.remove('done');crCloudStatus('存档已恢复，并写回本机。');crSync();toast('存档已恢复');return true;
+ }catch(e){toast('恢复失败，存档码可能被截断');return false}
  finally{crSetBusy(false)}
 }
-async function crCopyCode(){if(!crCloudConfirmed){toast('请先成功保存角色');return}try{await navigator.clipboard.writeText(crVaultKey);toast('云存档码已复制，请单独保管')}catch(e){const box=$('#ccloudcode');box.focus();box.select();let copied=false;try{copied=document.execCommand('copy')===true}catch(e){}toast(copied?'云存档码已复制，请单独保管':'自动复制未完成，存档码已选中，请长按或右键复制')}}
-async function crCopySettings(){const value=crSavedText();try{await navigator.clipboard.writeText(value);toast('已复制云端确认的角色设定')}catch(e){const node=$('#cres .saved-settings pre')||$('#cstoredtext');if(node){const details=node.closest('details');if(details)details.open=true;const range=document.createRange();range.selectNodeContents(node);const selection=getSelection();selection.removeAllRanges();selection.addRange(range)}let copied=false;try{copied=document.execCommand('copy')===true}catch(e){}toast(copied?'已复制云端确认的角色设定':'自动复制未完成，已选中保存设定，请手动复制')}}
+async function crCopyCode(){
+ if(!crCloudConfirmed||!crVaultKey){const snap=crSnapshot();snap.settingsText=crToText();crVaultKey=crCode(snap);crCloudConfirmed=true}
+ try{await navigator.clipboard.writeText(crVaultKey);toast('存档码已复制（自带全部设定）')}
+ catch(e){const box=$('#ccloudcode');if(box){box.value=crVaultKey;box.focus();box.select()}let copied=false;try{copied=document.execCommand('copy')===true}catch(e){}toast(copied?'存档码已复制（自带全部设定）':'自动复制未完成，存档码已选中，请长按复制')}
+}
+async function crCopySettings(){
+ const value=crToText();
+ CF.savedText=value;
+ try{await navigator.clipboard.writeText(value);toast('已复制全部角色设定，可直接粘贴到聊天框')}
+ catch(e){
+  const node=$('#cstoredtext');
+  if(node){const details=node.closest('details');if(details)details.open=true;node.textContent=value;const range=document.createRange();range.selectNodeContents(node);const selection=getSelection();selection.removeAllRanges();selection.addRange(range)}
+  let copied=false;try{copied=document.execCommand('copy')===true}catch(e){}
+  toast(copied?'已复制全部角色设定':'自动复制未完成，已选中全部设定，请手动复制')
+ }
+}
 async function crSaveAttrs(){
  if(crCloudBusy)return false;if(CF.attributesLocked){crSyncAttrs();return true}
  $$('#cre [data-attr]').forEach(input=>{CF.attributes[input.dataset.attr]=crAttrValue(input.value)});CF.attributesLocked=true;
  if(!await crSave()){CF.attributesLocked=false;crSyncAttrs();return false}
- crSync();toast('六项初始属性已保存到云端，并已锁定');return true;
+ crSync();toast('六项初始属性已保存，并已锁定');return true;
 }
 async function crSavePortrait(){
  if(crCloudBusy)return false;const raw=$('#curl').value.trim();if(raw&&!crPortraitUrl(raw)){toast('请输入公开HTTPS图片外链');return false}
  const backup=$('#cfallback').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  if(backup.some(u=>!crPortraitUrl(u))){toast('备用外链也需要是完整HTTPS地址，每行一条');return false}
  crUrlRequest++;crPreviewSrc='';if(raw)crPicSet(raw,-1,'url',backup);else CF.pic=null;
- if(!await crSave())return false;crSync();$('#portraitstatus').textContent='外链已保存到云端；图片预览不影响创建。';toast('立绘外链已保存到云端角色设定');return true;
+ if(!await crSave())return false;crSync();$('#portraitstatus').textContent='外链已保存到角色设定；图片预览不影响创建。';toast('立绘外链已保存');return true;
 }
 async function crMake(){
  if(crCloudBusy)return false;const raw=$('#curl').value.trim(),oldLock=CF.attributesLocked;
@@ -1364,9 +1420,9 @@ function crShowResult(){
   const rows=[['姓名',CF.name.trim()||'未命名'],['性别',val('gender')],['时间线',val('tl')],['武器',val('wp')],['初始技能',val('sk')],['天赋',val('ta')],['操作水平',val('lv')]];
   if(CF.pic)rows.push(['立绘URL',CF.pic.src]);for(const [key,label] of CR_ATTRS)rows.push([label+'（已锁定）',String(CF.attributes[key])]);if(CF.note.trim())rows.push(['备注',CF.note.trim()]);
   $('#cres').innerHTML=`<h3>角色创建完成</h3><div style="font:11px Bahnschrift,Arial;letter-spacing:5px;color:#7fe3f2">CHARACTER REGISTERED</div><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${esc(r[1]||'未指定')}</td></tr>`).join('')}</table>
-  <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制已保存角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 修改其他资料</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
+  <div class="acts"><button class="sbtn pri" data-c="copy" type="button">📋 复制全部角色设定</button><button class="sbtn" data-c="txt" type="button">⬇ 下载 .txt</button><button class="sbtn" data-c="edit" type="button">✎ 修改其他资料</button><button class="sbtn" data-c="x" type="button">关闭</button></div>
   <details class="saved-settings"><summary>查看已保存的角色设定</summary><pre>${esc(crSavedText())}</pre></details>
-  <div class="tip">以上内容已保存到云端角色设定，复制与下载读取同一份确认记录。请在返回表单后单独复制云存档码，用于重开或换设备恢复。初始加点已锁定；进入聊天时发送这份设定，正文状态栏按同名六项承接。</div>`;cre.classList.add('done');
+  <div class="tip">以上内容已保存在当前页面（不联网）。点「复制全部角色设定」即可整份带走，粘进聊天框发送；初始加点已锁定，正文状态栏按同名六项承接。</div>`;cre.classList.add('done');
 }
 function crPortraitUrl(value){
   try{const u=new URL(String(value||'').trim());return u.protocol==='https:'&&!u.username&&!u.password?u.href:''}catch(e){return ''}}
@@ -1396,7 +1452,7 @@ cre.addEventListener('click',async e=>{
 cre.addEventListener('input',e=>{const t=e.target;if(t.matches('[data-attr]')){crChangeAttr(t.dataset.attr,t.value);return}if(t.id==='curl'){crUrlRequest++;crPreviewSrc='';}else if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
 cre.addEventListener('change',e=>{if(e.target.matches('[data-attr]'))crChangeAttr(e.target.dataset.attr,e.target.value)});
 $('#curl').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();crUrl()}});
-openCreator.loaded=1;{const nick=$('#nick');if(nick)CF.name=nick.value.trim()}crSync();crLoad().catch(()=>crCloudStatus('请用存档码重试恢复云存档。'));
+openCreator.loaded=1;{const nick=$('#nick');if(nick)CF.name=nick.value.trim()}crSync();try{crLoad()}catch(e){crCloudStatus('本机存档读取失败，可以重新填写或粘贴存档码。')}
 // the old "Items" menu entry becomes "创造角色"
 {const it=fA.querySelector('.mi');it.lastChild.textContent='创造角色';it.style.fontSize='11px';it.title='创造你的角色'}
 
@@ -1409,7 +1465,7 @@ act=function(name,elm){
     if(!galleryAllowed()){tick(500,.08);return}
     if(name==='music2'&&MU.i>=0&&MU.pl&&MU.ready){mToggle();tick(1300,.05,.05);return}
     openMusic();if(MU.i<0)mPlay(0);else tick(1200,.06,.05);return}
-  if(name==='login2'&&hudStage===1){const nk=$('#nick');CF.name=((nk&&nk.value)||'Kirito').trim()||'Kirito';crSync();toast('已登录：「'+CF.name+'」，创建角色时保存到云端设定')}
+  if(name==='login2'&&hudStage===1){const nk=$('#nick');CF.name=((nk&&nk.value)||'Kirito').trim()||'Kirito';crSync();toast('已登录：「'+CF.name+'」，建角后设定保存在本页')}
   if(name==='login2'||name==='menu'){if((name==='login2'&&hudStage===1)||(name==='menu'&&scene==='hud'&&hudStage>=3))flash()}
   return _act(name,elm)};
 addEventListener('keydown',e=>{
