@@ -1288,7 +1288,8 @@ async function crRestore(value){
  catch(e){crVaultKey=oldKey;crCloudLoadFailed=!!oldKey&&!crCloudConfirmed;crCloudStatus('存档未读取，请核对存档码并重试；没有改写云端记录。');toast('存档尚未读取，请核对存档码和网络');return false}
  finally{crSetBusy(false)}
 }
-async function crCopyCode(){if(!crCloudConfirmed){toast('请先成功保存角色');return}try{await navigator.clipboard.writeText(crVaultKey);toast('云存档码已复制，请单独保管')}catch(e){const box=$('#ccloudcode');box.focus();box.select();try{document.execCommand('copy');toast('云存档码已复制')}catch(e){toast('请选中存档码手动复制')}}}
+async function crCopyCode(){if(!crCloudConfirmed){toast('请先成功保存角色');return}try{await navigator.clipboard.writeText(crVaultKey);toast('云存档码已复制，请单独保管')}catch(e){const box=$('#ccloudcode');box.focus();box.select();let copied=false;try{copied=document.execCommand('copy')===true}catch(e){}toast(copied?'云存档码已复制，请单独保管':'自动复制未完成，存档码已选中，请长按或右键复制')}}
+async function crCopySettings(){const value=crSavedText();try{await navigator.clipboard.writeText(value);toast('已复制云端确认的角色设定')}catch(e){const node=$('#cres .saved-settings pre')||$('#cstoredtext');if(node){const details=node.closest('details');if(details)details.open=true;const range=document.createRange();range.selectNodeContents(node);const selection=getSelection();selection.removeAllRanges();selection.addRange(range)}let copied=false;try{copied=document.execCommand('copy')===true}catch(e){}toast(copied?'已复制云端确认的角色设定':'自动复制未完成，已选中保存设定，请手动复制')}}
 async function crSaveAttrs(){
  if(crCloudBusy)return false;if(CF.attributesLocked){crSyncAttrs();return true}
  $$('#cre [data-attr]').forEach(input=>{CF.attributes[input.dataset.attr]=crAttrValue(input.value)});CF.attributesLocked=true;
@@ -1389,7 +1390,7 @@ cre.addEventListener('click',async e=>{
   else if(v==='saveattrs')await crSaveAttrs();
   else if(v==='make')await crMake();
   else if(v==='edit'){cre.classList.remove('done')}
-  else if(v==='copy'){const t=crSavedText();(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制，去聊天里粘贴吧'),()=>{const ta=mk('textarea','',null,document.body);ta.value=t;ta.style.cssText='position:fixed;left:-999px';ta.select();try{document.execCommand('copy');toast('已复制，去聊天里粘贴吧')}catch(_){toast('复制失败，请手动选择文字')}ta.remove()})}
+  else if(v==='copy')await crCopySettings();
   else if(v==='txt'){const a=mk('a','',null,document.body);a.href=URL.createObjectURL(new Blob([crSavedText()],{type:'text/plain;charset=utf-8'}));a.download=(CF.name.trim()||'角色')+'_设定.txt';a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 });
 cre.addEventListener('input',e=>{const t=e.target;if(t.matches('[data-attr]')){crChangeAttr(t.dataset.attr,t.value);return}if(t.id==='curl'){crUrlRequest++;crPreviewSrc='';}else if(t.id==='cnote')CF.note=t.value;else if(t.classList.contains('cin'))CF[t.dataset.k].cus=t.value;crSync()});
